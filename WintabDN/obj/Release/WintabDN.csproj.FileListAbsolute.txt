@@ -1,0 +1,4 @@
+C:\Users\Admin\Downloads\WintabDN\WintabDN\bin\Release\WintabDN.dll
+C:\Users\Admin\Downloads\WintabDN\WintabDN\bin\Release\WintabDN.pdb
+C:\Users\Admin\Downloads\WintabDN\WintabDN\obj\Release\WintabDN.dll
+C:\Users\Admin\Downloads\WintabDN\WintabDN\obj\Release\WintabDN.pdb

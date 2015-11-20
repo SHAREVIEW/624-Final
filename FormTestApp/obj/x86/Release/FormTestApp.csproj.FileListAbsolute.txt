@@ -1,0 +1,12 @@
+C:\Users\Admin\Downloads\WintabDN\FormTestApp\bin\Release\FormTestApp.exe.config
+C:\Users\Admin\Downloads\WintabDN\FormTestApp\bin\Release\FormTestApp.exe
+C:\Users\Admin\Downloads\WintabDN\FormTestApp\bin\Release\FormTestApp.pdb
+C:\Users\Admin\Downloads\WintabDN\FormTestApp\bin\Release\WintabDN.dll
+C:\Users\Admin\Downloads\WintabDN\FormTestApp\bin\Release\WintabDN.pdb
+C:\Users\Admin\Downloads\WintabDN\FormTestApp\obj\x86\Release\FormTestApp.csprojResolveAssemblyReference.cache
+C:\Users\Admin\Downloads\WintabDN\FormTestApp\obj\x86\Release\WintabDN.QueryDataForm.resources
+C:\Users\Admin\Downloads\WintabDN\FormTestApp\obj\x86\Release\FormTestApp.TestForm.resources
+C:\Users\Admin\Downloads\WintabDN\FormTestApp\obj\x86\Release\FormTestApp.Properties.Resources.resources
+C:\Users\Admin\Downloads\WintabDN\FormTestApp\obj\x86\Release\FormTestApp.csproj.GenerateResource.Cache
+C:\Users\Admin\Downloads\WintabDN\FormTestApp\obj\x86\Release\FormTestApp.exe
+C:\Users\Admin\Downloads\WintabDN\FormTestApp\obj\x86\Release\FormTestApp.pdb
