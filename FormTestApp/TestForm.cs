@@ -771,7 +771,7 @@ namespace FormTestApp
                             */
 
 
-                            Point clientPoint = scribblePanel.PointToClient(new Point(m_pkX, m_pkY));
+                            Point clientPoint = new Point(m_pkX, m_pkY);
                             
                             Trace.WriteLine("CLIENT:   X: " + clientPoint.X + ", Y:" + clientPoint.Y);
 
