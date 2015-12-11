@@ -1,5 +1,0 @@
-C:\Users\Admin\Documents\GitHub\624-Final\WintabDN\bin\Release\WintabDN.dll
-C:\Users\Admin\Documents\GitHub\624-Final\WintabDN\bin\Release\WintabDN.pdb
-C:\Users\Admin\Documents\GitHub\624-Final\WintabDN\obj\Release\WintabDN.csprojResolveAssemblyReference.cache
-C:\Users\Admin\Documents\GitHub\624-Final\WintabDN\obj\Release\WintabDN.dll
-C:\Users\Admin\Documents\GitHub\624-Final\WintabDN\obj\Release\WintabDN.pdb

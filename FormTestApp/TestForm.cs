@@ -60,7 +60,12 @@ namespace FormTestApp
         private TemplateRecognizer TR;
         private ShapeTemplate Shapes;
 
-        private System.Timers.Timer compareTimer;
+        private System.Windows.Forms.Timer compareTimer;
+
+        private List<List<List<int>>> sets;
+        private int currentSet;
+        private int currentSeq;
+        private int seqIndex;
 
 		 // These constants can be used to force Wintab X/Y data to map into a
 		 // a 10000 x 10000 grid, as an example of mapping tablet data to values
@@ -78,14 +83,54 @@ namespace FormTestApp
             this.FormClosing += new FormClosingEventHandler(TestForm_FormClosing);
             TR = new TemplateRecognizer();
             Shapes = new ShapeTemplate();
-            compareTimer = new System.Timers.Timer();
+            compareTimer = new System.Windows.Forms.Timer();
+            compareTimer.Tick += new EventHandler(CompareShapes);
             compareTimer.Interval = 250;
-            compareTimer.Elapsed += CompareShapes;
-            compareTimer.AutoReset = false;
-            currentShape = 0;
+            
             strokeNum = 0;
-            CurrentTemplateLabel.Text = Shapes.getShape(currentShape).name;
             autoRecognize = true;
+            loadSets();
+            currentSet = 0;
+            currentSeq = 0;
+            seqIndex = 0;
+
+            currentShape = sets[currentSet][currentSeq][seqIndex];
+            CurrentTemplateLabel.Text = String.Format("({0},{1},{2}): {3}", currentSet, currentSeq, seqIndex, Shapes.getShape(currentShape).name);
+        }
+
+        private void loadSets()
+        {
+            sets = new List<List<List<int>>>();
+            if (System.IO.File.Exists(@"C:\Users\Admin\Documents\GitHub\624-Final\Templates\Sets.txt"))
+            {
+                using (System.IO.StreamReader file = new System.IO.StreamReader(@"C:\Users\Admin\Documents\GitHub\624-Final\Templates\Sets.txt", true))
+                {
+                    while(true)
+                    {
+                        string seqNumStr = file.ReadLine();
+                        if (seqNumStr == null)
+                            break;
+                        sets.Add(new List<List<int>>());
+
+                        int numSequences = Int32.Parse(seqNumStr);
+                        for(int i=0;i<numSequences;i++)
+                        {
+                            string seqStr = file.ReadLine();
+                            string[] splitStr = seqStr.Split(',');
+                            List<int> seq = new List<int>();
+                            for(int j=0;j<splitStr.Length;j++)
+                            {
+                                seq.Add(Int32.Parse(splitStr[j]));
+                            }
+                            sets[sets.Count - 1].Add(seq);
+                        }
+                    }
+                }
+            }
+            else
+            {
+                Console.WriteLine("WARNING: No shape sets found!");
+            }
         }
 
         ///////////////////////////////////////////////////////////////////////
@@ -822,7 +867,7 @@ namespace FormTestApp
                             {
                                 if(compareTimer.Enabled)
                                 {
-                                    compareTimer.Enabled = false;
+                                    compareTimer.Stop();
                                 }
 
                                 if (m_pkTime - m_pkTimeLast < 5)
@@ -838,7 +883,7 @@ namespace FormTestApp
                                     m_graphics.DrawLine(m_pen, clientPoint, m_lastPoint);
                                     DrawPoint dp = new DrawPoint(clientPoint.X, clientPoint.Y, strokeNum, m_pkTime, m_pressure);
                                     TR.AddPoint(dp);
-                                    compareTimer.Enabled = true;
+                                    compareTimer.Start();
                                 }
                             }
 
@@ -986,27 +1031,51 @@ namespace FormTestApp
             return false;
         }
 
-        private void CompareShapes(Object source, System.Timers.ElapsedEventArgs e)
+        private void CompareShapes(Object source, EventArgs e)
         {
-            Console.WriteLine("The Elapsed event was raised at {0}", e.SignalTime);
+            compareTimer.Stop();
             if (haveTemplates() && autoRecognize)
             {
                 Console.WriteLine("Attempting recognition.\n");
                 if(AttemptRecognition())
                 {
-                    Console.WriteLine("successful rec");
                     TR.ResetPoints(Shapes.getShape(currentShape), true);
                     scribblePanel.Invalidate();
                     strokeNum = 0;
+                    GetNextShape();
                 }
             }
         }
 
         private void ChangeShape_Click(object sender, EventArgs e)
         {
-            currentShape = (currentShape + 1) % Shapes.NUM_SHAPES;
+            GetNextShape();
+        }
+
+        private void GetNextShape()
+        {
+            //currentShape = (currentShape + 1) % Shapes.NUM_SHAPES;
+
+            seqIndex++;
+            if(seqIndex >= sets[currentSet][currentSeq].Count)
+            {
+                currentSeq++;
+                seqIndex = 0;
+                if(currentSeq >= sets[currentSet].Count)
+                {
+                    currentSet++;
+                    currentSeq = 0;
+                    if(currentSet >= sets.Count)
+                    {
+                        currentSet = 0;
+                    }
+                }
+            }
+
+            currentShape = sets[currentSet][currentSeq][seqIndex];
+
             WipeBoxNoLog();
-            CurrentTemplateLabel.Text = Shapes.getShape(currentShape).name;
+            CurrentTemplateLabel.Text = String.Format("({0},{1},{2}): {3}",currentSet,currentSeq,seqIndex,Shapes.getShape(currentShape).name);
         }
 
         private void TemplateDump_Click(object sender, EventArgs e)
