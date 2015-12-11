@@ -10,6 +10,21 @@ C:\Users\Admin\Downloads\WintabDN\FormTestApp\obj\x86\Debug\FormTestApp.Properti
 C:\Users\Admin\Downloads\WintabDN\FormTestApp\obj\x86\Debug\FormTestApp.csproj.GenerateResource.Cache
 C:\Users\Admin\Downloads\WintabDN\FormTestApp\obj\x86\Debug\FormTestApp.exe
 C:\Users\Admin\Downloads\WintabDN\FormTestApp\obj\x86\Debug\FormTestApp.pdb
+<<<<<<< HEAD
 C:\Users\Admin\Documents\GitHub\624-Final\FormTestApp\bin\Debug\FormTestApp.exe.config
 C:\Users\Admin\Documents\GitHub\624-Final\FormTestApp\obj\x86\Debug\FormTestApp.exe
 C:\Users\Admin\Documents\GitHub\624-Final\FormTestApp\obj\x86\Debug\FormTestApp.pdb
+=======
+D:\GitHub\624-Final\FormTestApp\bin\Debug\FormTestApp.exe.config
+D:\GitHub\624-Final\FormTestApp\obj\x86\Debug\FormTestApp.exe
+D:\GitHub\624-Final\FormTestApp\obj\x86\Debug\FormTestApp.pdb
+D:\GitHub\624-Final\FormTestApp\bin\Debug\FormTestApp.exe
+D:\GitHub\624-Final\FormTestApp\bin\Debug\FormTestApp.pdb
+D:\GitHub\624-Final\FormTestApp\bin\Debug\WintabDN.dll
+D:\GitHub\624-Final\FormTestApp\bin\Debug\WintabDN.pdb
+D:\GitHub\624-Final\FormTestApp\obj\x86\Debug\FormTestApp.csprojResolveAssemblyReference.cache
+D:\GitHub\624-Final\FormTestApp\obj\x86\Debug\WintabDN.QueryDataForm.resources
+D:\GitHub\624-Final\FormTestApp\obj\x86\Debug\FormTestApp.TestForm.resources
+D:\GitHub\624-Final\FormTestApp\obj\x86\Debug\FormTestApp.Properties.Resources.resources
+D:\GitHub\624-Final\FormTestApp\obj\x86\Debug\FormTestApp.csproj.GenerateResource.Cache
+>>>>>>> origin/master
