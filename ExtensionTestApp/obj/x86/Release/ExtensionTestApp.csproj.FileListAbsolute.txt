@@ -9,3 +9,14 @@ C:\Users\Admin\Downloads\WintabDN\ExtensionTestApp\obj\x86\Release\FormExtTestAp
 C:\Users\Admin\Downloads\WintabDN\ExtensionTestApp\obj\x86\Release\ExtensionTestApp.csproj.GenerateResource.Cache
 C:\Users\Admin\Downloads\WintabDN\ExtensionTestApp\obj\x86\Release\ExtensionTestApp.exe
 C:\Users\Admin\Downloads\WintabDN\ExtensionTestApp\obj\x86\Release\ExtensionTestApp.pdb
+C:\Users\Admin\Documents\GitHub\624-Final\ExtensionTestApp\bin\Release\ExtensionTestApp.exe.config
+C:\Users\Admin\Documents\GitHub\624-Final\ExtensionTestApp\bin\Release\ExtensionTestApp.exe
+C:\Users\Admin\Documents\GitHub\624-Final\ExtensionTestApp\bin\Release\ExtensionTestApp.pdb
+C:\Users\Admin\Documents\GitHub\624-Final\ExtensionTestApp\bin\Release\WintabDN.dll
+C:\Users\Admin\Documents\GitHub\624-Final\ExtensionTestApp\bin\Release\WintabDN.pdb
+C:\Users\Admin\Documents\GitHub\624-Final\ExtensionTestApp\obj\x86\Release\ExtensionTestApp.csprojResolveAssemblyReference.cache
+C:\Users\Admin\Documents\GitHub\624-Final\ExtensionTestApp\obj\x86\Release\ExtensionTestApp.Properties.Resources.resources
+C:\Users\Admin\Documents\GitHub\624-Final\ExtensionTestApp\obj\x86\Release\FormExtTestApp.ExtensionTestForm.resources
+C:\Users\Admin\Documents\GitHub\624-Final\ExtensionTestApp\obj\x86\Release\ExtensionTestApp.csproj.GenerateResource.Cache
+C:\Users\Admin\Documents\GitHub\624-Final\ExtensionTestApp\obj\x86\Release\ExtensionTestApp.exe
+C:\Users\Admin\Documents\GitHub\624-Final\ExtensionTestApp\obj\x86\Release\ExtensionTestApp.pdb

@@ -49,6 +49,18 @@ namespace FormTestApp
         private Graphics m_graphics;
         private Pen m_pen;
         private Pen m_backPen;
+        private Pen test_pen;
+
+        private int strokeNum;
+
+        private bool autoRecognize;
+
+        private int currentShape;
+
+        private TemplateRecognizer TR;
+        private ShapeTemplate Shapes;
+
+        private System.Timers.Timer compareTimer;
 
 		 // These constants can be used to force Wintab X/Y data to map into a
 		 // a 10000 x 10000 grid, as an example of mapping tablet data to values
@@ -64,6 +76,16 @@ namespace FormTestApp
             InitializeComponent();
             FakeEnable();
             this.FormClosing += new FormClosingEventHandler(TestForm_FormClosing);
+            TR = new TemplateRecognizer();
+            Shapes = new ShapeTemplate();
+            compareTimer = new System.Timers.Timer();
+            compareTimer.Interval = 250;
+            compareTimer.Elapsed += CompareShapes;
+            compareTimer.AutoReset = false;
+            currentShape = 0;
+            strokeNum = 0;
+            CurrentTemplateLabel.Text = Shapes.getShape(currentShape).name;
+            autoRecognize = true;
         }
 
         ///////////////////////////////////////////////////////////////////////
@@ -156,6 +178,8 @@ namespace FormTestApp
         private void clearButton_Click(object sender, EventArgs e)
         {
             ClearDisplay();
+            TR.ResetPoints(Shapes.getShape(currentShape), false);
+            strokeNum = 0;
         }
 
         ///////////////////////////////////////////////////////////////////////
@@ -739,10 +763,10 @@ namespace FormTestApp
                         m_pkY = pkt.pkY;
                         m_pressure = pkt.pkNormalPressure;
 
-								Trace.WriteLine("SCREEN: pkX: " + pkt.pkX + ", pkY:" + pkt.pkY + ", pressure: " + pkt.pkNormalPressure);
+								//Trace.WriteLine("SCREEN: pkX: " + pkt.pkX + ", pkY:" + pkt.pkY + ", pressure: " + pkt.pkNormalPressure);
 
                         m_pkTime = pkt.pkTime;
-
+                        //Console.WriteLine("time: " + m_pkTime);
                         if (m_graphics == null)
                         {
                             // display data mode
@@ -772,8 +796,18 @@ namespace FormTestApp
 
 
                             Point clientPoint = scribblePanel.PointToClient(new Point(m_pkX, m_pkY));
-                            
-                            Trace.WriteLine("CLIENT:   X: " + clientPoint.X + ", Y:" + clientPoint.Y);
+
+                            if (clientPoint.X < 0)
+                                return;
+                            if (clientPoint.Y < 0)
+                                return;
+
+                            if (clientPoint.X > scribblePanel.Width)
+                                return;
+                            if (clientPoint.Y > scribblePanel.Height)
+                                return;
+
+                            //Trace.WriteLine("CLIENT:   X: " + clientPoint.X + ", Y:" + clientPoint.Y);
 
                             if (m_lastPoint.Equals(Point.Empty))
                             {
@@ -786,13 +820,25 @@ namespace FormTestApp
 
                             if (m_pressure > 0)
                             {
+                                if(compareTimer.Enabled)
+                                {
+                                    compareTimer.Enabled = false;
+                                }
+
                                 if (m_pkTime - m_pkTimeLast < 5)
                                 {
+                                    Console.WriteLine("new stroke");
                                     m_graphics.DrawRectangle(m_pen, clientPoint.X, clientPoint.Y, 1, 1);
+                                    strokeNum++;
+                                    DrawPoint dp = new DrawPoint(clientPoint.X, clientPoint.Y, strokeNum, m_pkTime, m_pressure);
+                                    TR.AddStartPoint(dp);
                                 }
                                 else
                                 {
                                     m_graphics.DrawLine(m_pen, clientPoint, m_lastPoint);
+                                    DrawPoint dp = new DrawPoint(clientPoint.X, clientPoint.Y, strokeNum, m_pkTime, m_pressure);
+                                    TR.AddPoint(dp);
+                                    compareTimer.Enabled = true;
                                 }
                             }
 
@@ -832,5 +878,155 @@ namespace FormTestApp
 					  ", W:" + scribblePanel.Width + ", H:" + scribblePanel.Height);
 			  }
 		  }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            AttemptRecognition();
+        }
+
+        private bool AttemptRecognition()
+        {
+            if (TR.TryRecognizeShape(Shapes.getShape(currentShape)))
+            {
+                Console.WriteLine("Success");
+                //label1.Visible = true;
+                //TemplateNoLabel.Visible = false;
+                DrawGrid(Color.Green);
+                return true;
+            }
+            else
+            {
+                Console.WriteLine("Fail");
+                //label1.Visible = false;
+                //TemplateNoLabel.Visible = true;
+                DrawGrid(Color.Red);
+                return false;
+            }
+        }
+
+        private void DrawGrid(Color c)
+        {
+            List<DrawPoint> p= TR.getPoints();
+
+            double minX = p[0].X;
+            double minY = p[0].Y;
+            double maxX = p[0].X;
+            double maxY = p[0].Y;
+
+            for (int i = 1; i < p.Count;i++)
+            {
+                double x = p[i].X;
+                double y = p[i].Y;
+
+                if (x < minX)
+                    minX = x;
+                if (y < minY)
+                    minY = y;
+
+                if (x > maxX)
+                    maxX = x;
+                if (y > maxY)
+                    maxY = y;
+            }
+
+            test_pen = new Pen(c);
+            m_graphics.DrawLine(test_pen, new Point((int)minX, (int)minY),new Point((int)minX, (int)maxY));
+            m_graphics.DrawLine(test_pen, new Point((int)minX, (int)maxY), new Point((int)maxX, (int)maxY));
+            m_graphics.DrawLine(test_pen, new Point((int)maxX, (int)maxY), new Point((int)maxX, (int)minY));
+            m_graphics.DrawLine(test_pen, new Point((int)maxX, (int)minY), new Point((int)minX, (int)minY));
+        }
+
+        private void TemplateToggle_Click(object sender, EventArgs e)
+        {
+            showTemplates();
+        }
+
+        private void showTemplates()
+        {
+            Shape shape = Shapes.getShape(currentShape);
+            for (int j = 0; j < shape.numTemplates; j++)
+            {
+                List<DrawPoint> template = shape.getTemplate(j);
+
+                Pen template_pen = new Pen(Color.Red);
+
+                m_graphics.DrawRectangle(template_pen, (int)template[0].X, (int)template[0].Y, 1, 1);
+
+                for (int i = 1; i < template.Count; i++)
+                {
+                    m_graphics.DrawLine(template_pen, template[i - 1].ToPoint(), template[i].ToPoint());
+                }
+            }
+        }
+
+        private void WipeBoxNoLog()
+        {
+            TR.ResetPointsNoLog();
+            ClearDisplay();
+            strokeNum = 0;
+        }
+
+        //Add a template to the list
+        private void button2_Click(object sender, EventArgs e)
+        {
+            Shapes.getShape(currentShape).addTemplate(TR.getPoints());
+            WipeBoxNoLog();
+        }
+
+        private void ClearTemplates_Click(object sender, EventArgs e)
+        {
+            Shapes.getShape(currentShape).clearTemplates();
+            WipeBoxNoLog();
+        }
+
+        public bool haveTemplates()
+        {
+            if (Shapes.getShape(currentShape).numTemplates > 0)
+                return true;
+            return false;
+        }
+
+        private void CompareShapes(Object source, System.Timers.ElapsedEventArgs e)
+        {
+            Console.WriteLine("The Elapsed event was raised at {0}", e.SignalTime);
+            if (haveTemplates() && autoRecognize)
+            {
+                Console.WriteLine("Attempting recognition.\n");
+                if(AttemptRecognition())
+                {
+                    Console.WriteLine("successful rec");
+                    TR.ResetPoints(Shapes.getShape(currentShape), true);
+                    scribblePanel.Invalidate();
+                    strokeNum = 0;
+                }
+            }
+        }
+
+        private void ChangeShape_Click(object sender, EventArgs e)
+        {
+            currentShape = (currentShape + 1) % Shapes.NUM_SHAPES;
+            WipeBoxNoLog();
+            CurrentTemplateLabel.Text = Shapes.getShape(currentShape).name;
+        }
+
+        private void TemplateDump_Click(object sender, EventArgs e)
+        {
+            Shape dumper = Shapes.getShape(currentShape);
+            dumper.appendTemplatesToFile();
+            WipeBoxNoLog();
+        }
+
+        private void ToggleRecognize_Click(object sender, EventArgs e)
+        {
+            autoRecognize = !autoRecognize;
+            if(autoRecognize)
+            {
+                Console.WriteLine("Now autorecognizing.");
+            }
+            else
+            {
+                Console.WriteLine("Not autorecognizing.");
+            }
+        }
     }
 }

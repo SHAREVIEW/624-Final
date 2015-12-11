@@ -10,3 +10,6 @@ C:\Users\Admin\Downloads\WintabDN\FormTestApp\obj\x86\Debug\FormTestApp.Properti
 C:\Users\Admin\Downloads\WintabDN\FormTestApp\obj\x86\Debug\FormTestApp.csproj.GenerateResource.Cache
 C:\Users\Admin\Downloads\WintabDN\FormTestApp\obj\x86\Debug\FormTestApp.exe
 C:\Users\Admin\Downloads\WintabDN\FormTestApp\obj\x86\Debug\FormTestApp.pdb
+C:\Users\Admin\Documents\GitHub\624-Final\FormTestApp\bin\Debug\FormTestApp.exe.config
+C:\Users\Admin\Documents\GitHub\624-Final\FormTestApp\obj\x86\Debug\FormTestApp.exe
+C:\Users\Admin\Documents\GitHub\624-Final\FormTestApp\obj\x86\Debug\FormTestApp.pdb
