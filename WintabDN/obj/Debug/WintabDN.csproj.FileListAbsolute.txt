@@ -1,5 +1,0 @@
-C:\Users\Admin\Downloads\WintabDN\WintabDN\bin\Debug\WintabDN.dll
-C:\Users\Admin\Downloads\WintabDN\WintabDN\bin\Debug\WintabDN.pdb
-C:\Users\Admin\Downloads\WintabDN\WintabDN\obj\Debug\WintabDN.csprojResolveAssemblyReference.cache
-C:\Users\Admin\Downloads\WintabDN\WintabDN\obj\Debug\WintabDN.dll
-C:\Users\Admin\Downloads\WintabDN\WintabDN\obj\Debug\WintabDN.pdb
