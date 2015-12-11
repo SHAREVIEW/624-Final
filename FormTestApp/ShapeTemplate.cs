@@ -145,8 +145,13 @@ namespace FormTestApp
         {
             Console.WriteLine("Dumping {0} {1} templates to file",numTemplates-readTemplates,name);
             string fileName = String.Format(@"C:\Users\Admin\Documents\GitHub\624-Final\Templates\{0}.txt", name);
+            bool existed = System.IO.File.Exists(fileName);
             using (System.IO.StreamWriter file = new System.IO.StreamWriter(fileName, true))
             {
+                if(existed)
+                {
+                    file.WriteLine("");
+                }
                 for(int i=readTemplates; i < numTemplates;i++)
                 {
                     file.WriteLine(templates[i].Count);

@@ -521,6 +521,10 @@ namespace FormTestApp
         //Classifies the current list of points as either the given shape template or not.
         public bool TryRecognizeShape(Shape s)
         {
+
+            if (points.Count == 0)
+                return false;
+
             //bool success = OneDollarRecognizer(s);
             //Console.WriteLine("attempt $p");
             double val = PDollar(points, s);
