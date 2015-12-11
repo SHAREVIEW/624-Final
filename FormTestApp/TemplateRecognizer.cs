@@ -55,9 +55,12 @@ namespace FormTestApp
             double dist = 0;
             for(int i=1;i<p.Count;i++)
             {
-                double delX = p[i].X - p[i - 1].X;
-                double delY = p[i].Y - p[i - 1].Y;
-                dist += Math.Sqrt(delX * delX + delY * delY);
+                if (p[i].stroke == p[i - 1].stroke)
+                {
+                    double delX = p[i].X - p[i - 1].X;
+                    double delY = p[i].Y - p[i - 1].Y;
+                    dist += Math.Sqrt(delX * delX + delY * delY);
+                }
             }
             return dist;
         }
@@ -493,16 +496,16 @@ namespace FormTestApp
         {
             double score = Double.MaxValue;
             int n = 32;
-            //Console.WriteLine("norm points");
+            Console.WriteLine("norm points");
             List<DrawPoint> normPoints = normalize(givenPoints, n);
-            //Console.WriteLine("normPoints has " + normPoints.Count);
+            Console.WriteLine("normPoints has " + normPoints.Count);
 
             //Console.WriteLine("attempt template 1");
             for (int i=0;i<s.numTemplates;i++)
             {
-                //Console.WriteLine("norm template");
+                Console.WriteLine("norm template "+i);
                 List<DrawPoint> normTemplate = normalize(s.getTemplate(i),n);
-                //Console.WriteLine("normTemplate has " + normTemplate.Count);
+                Console.WriteLine("normTemplate{0} has {1}",i, normTemplate.Count);
                 
                 //Console.WriteLine("start cloudmatch");
                 double d = GreedyCloudMatch(normPoints, normTemplate, n);

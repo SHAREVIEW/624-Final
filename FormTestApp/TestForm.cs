@@ -870,13 +870,15 @@ namespace FormTestApp
                                     compareTimer.Stop();
                                 }
 
-                                if (m_pkTime - m_pkTimeLast < 5)
+                                if (m_pkTime - m_pkTimeLast > 50)
                                 {
                                     Console.WriteLine("new stroke");
                                     m_graphics.DrawRectangle(m_pen, clientPoint.X, clientPoint.Y, 1, 1);
                                     strokeNum++;
                                     DrawPoint dp = new DrawPoint(clientPoint.X, clientPoint.Y, strokeNum, m_pkTime, m_pressure);
                                     TR.AddStartPoint(dp);
+                                    m_lastPoint = clientPoint;
+                                    m_pkTimeLast = m_pkTime;
                                 }
                                 else
                                 {
@@ -884,11 +886,12 @@ namespace FormTestApp
                                     DrawPoint dp = new DrawPoint(clientPoint.X, clientPoint.Y, strokeNum, m_pkTime, m_pressure);
                                     TR.AddPoint(dp);
                                     compareTimer.Start();
+                                    m_lastPoint = clientPoint;
+                                    m_pkTimeLast = m_pkTime;
                                 }
                             }
 
-                            m_lastPoint = clientPoint;
-                            m_pkTimeLast = m_pkTime;
+
                         }
                     }
                 }
@@ -999,7 +1002,8 @@ namespace FormTestApp
 
                 for (int i = 1; i < template.Count; i++)
                 {
-                    m_graphics.DrawLine(template_pen, template[i - 1].ToPoint(), template[i].ToPoint());
+                    if(template[i-1].stroke == template[i].stroke)
+                        m_graphics.DrawLine(template_pen, template[i - 1].ToPoint(), template[i].ToPoint());
                 }
             }
         }

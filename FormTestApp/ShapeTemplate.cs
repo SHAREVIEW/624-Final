@@ -156,7 +156,7 @@ namespace FormTestApp
                     }
                 }
             }
-            clearTemplates();
+            readTemplates = numTemplates;
             Console.WriteLine("done");
         }
     }
