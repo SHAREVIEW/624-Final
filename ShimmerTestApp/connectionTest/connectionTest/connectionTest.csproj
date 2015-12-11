@@ -59,7 +59,9 @@
     <Compile Include="ConnectionTest.Designer.cs">
       <DependentUpon>ConnectionTest.cs</DependentUpon>
     </Compile>
+    <Compile Include="Filter.cs" />
     <Compile Include="GradDes3DOrientation.cs" />
+    <Compile Include="Logging.cs" />
     <Compile Include="ObjectCluster.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

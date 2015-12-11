@@ -900,7 +900,7 @@ namespace ShimmerAPI
                                 }
                                 break;
                             default:
-                                System.Console.WriteLine("Misaligned ByteStream Detected");
+                                //System.Console.WriteLine("Misaligned ByteStream Detected");
                                 // If it gets here means the previous packet is invalid so make it null so it wont be added to the buffer
                                 KeepObjectCluster = null;
                                 break;

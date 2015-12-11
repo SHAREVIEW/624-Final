@@ -380,10 +380,13 @@ namespace ShimmerAPI
             KeepObjectCluster = null;
             if (IsConnectionOpen())
             {
+                Console.WriteLine("Connection open");
                 if (ShimmerState == SHIMMER_STATE_CONNECTED)
                 {
+                    Console.WriteLine("ShimmerState = Shimmer_state_connected");
                     if (IsFilled)
                     {
+                        Console.WriteLine("Is Filled");
                         StreamingACKReceived = false;
                         LastReceivedTimeStamp = 0;
                         CurrentTimeStampCycle = 0;
@@ -395,6 +398,7 @@ namespace ShimmerAPI
                         OrientationAlgo = null;
                         if (GetFirmwareIdentifier() == 3)
                         {
+                            Console.WriteLine("Firmware Identifier = 3");
                             WriteBytes(new byte[1] { (byte)ShimmerSDBT.PacketTypeShimmer3SDBT.GET_STATUS_COMMAND }, 0, 1);
                             System.Threading.Thread.Sleep(500);
                         }
@@ -452,6 +456,7 @@ namespace ShimmerAPI
                     else
                     {
                         String message = "Failed to read configuration information from shimmer. Please ensure correct shimmer is connected";
+                        Console.WriteLine(message);
                         CustomEventArgs newEventArgs = new CustomEventArgs((int)ShimmerIdentifier.MSG_IDENTIFIER_NOTIFICATION_MESSAGE, (object)message, (int)ShimmerSDBT.ShimmerSDBTMinorIdentifier.MSG_WARNING);
                         OnNewEvent(newEventArgs);
                     }

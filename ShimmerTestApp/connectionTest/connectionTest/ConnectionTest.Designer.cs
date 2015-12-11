@@ -42,6 +42,11 @@
             this.textBoxGyroRange = new System.Windows.Forms.TextBox();
             this.textBoxGSRRange = new System.Windows.Forms.TextBox();
             this.textBoxEnabledSensors = new System.Windows.Forms.TextBox();
+            this.toolStripStatusLabel1 = new System.Windows.Forms.Label();
+            this.disconnectButton = new System.Windows.Forms.Button();
+            this.currentGSRLabel = new System.Windows.Forms.Label();
+            this.streamButton = new System.Windows.Forms.Button();
+            this.stopButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // connectButton
@@ -160,11 +165,64 @@
             this.textBoxEnabledSensors.Size = new System.Drawing.Size(100, 26);
             this.textBoxEnabledSensors.TabIndex = 14;
             // 
+            // toolStripStatusLabel1
+            // 
+            this.toolStripStatusLabel1.AutoSize = true;
+            this.toolStripStatusLabel1.Location = new System.Drawing.Point(12, 156);
+            this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
+            this.toolStripStatusLabel1.Size = new System.Drawing.Size(163, 20);
+            this.toolStripStatusLabel1.TabIndex = 15;
+            this.toolStripStatusLabel1.Text = "toolStripStatusLabel1";
+            // 
+            // disconnectButton
+            // 
+            this.disconnectButton.Location = new System.Drawing.Point(927, 66);
+            this.disconnectButton.Name = "disconnectButton";
+            this.disconnectButton.Size = new System.Drawing.Size(207, 50);
+            this.disconnectButton.TabIndex = 16;
+            this.disconnectButton.Text = "Disconnect Device";
+            this.disconnectButton.UseVisualStyleBackColor = true;
+            this.disconnectButton.Click += new System.EventHandler(this.disconnectButton_Click);
+            // 
+            // currentGSRLabel
+            // 
+            this.currentGSRLabel.AutoSize = true;
+            this.currentGSRLabel.Location = new System.Drawing.Point(1161, 96);
+            this.currentGSRLabel.Name = "currentGSRLabel";
+            this.currentGSRLabel.Size = new System.Drawing.Size(134, 20);
+            this.currentGSRLabel.TabIndex = 17;
+            this.currentGSRLabel.Text = "currentGSRLabel";
+            // 
+            // streamButton
+            // 
+            this.streamButton.Location = new System.Drawing.Point(475, 66);
+            this.streamButton.Name = "streamButton";
+            this.streamButton.Size = new System.Drawing.Size(207, 50);
+            this.streamButton.TabIndex = 18;
+            this.streamButton.Text = "Start Streaming";
+            this.streamButton.UseVisualStyleBackColor = true;
+            this.streamButton.Click += new System.EventHandler(this.streamButton_Click);
+            // 
+            // stopButton
+            // 
+            this.stopButton.Location = new System.Drawing.Point(701, 66);
+            this.stopButton.Name = "stopButton";
+            this.stopButton.Size = new System.Drawing.Size(207, 50);
+            this.stopButton.TabIndex = 19;
+            this.stopButton.Text = "Stop Streaming";
+            this.stopButton.UseVisualStyleBackColor = true;
+            this.stopButton.Click += new System.EventHandler(this.stopButton_Click);
+            // 
             // ConnectionTest
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1459, 185);
+            this.Controls.Add(this.stopButton);
+            this.Controls.Add(this.streamButton);
+            this.Controls.Add(this.currentGSRLabel);
+            this.Controls.Add(this.disconnectButton);
+            this.Controls.Add(this.toolStripStatusLabel1);
             this.Controls.Add(this.textBoxEnabledSensors);
             this.Controls.Add(this.textBoxGSRRange);
             this.Controls.Add(this.textBoxGyroRange);
@@ -203,6 +261,11 @@
         private System.Windows.Forms.TextBox textBoxGyroRange;
         private System.Windows.Forms.TextBox textBoxGSRRange;
         private System.Windows.Forms.TextBox textBoxEnabledSensors;
+        private System.Windows.Forms.Label toolStripStatusLabel1;
+        private System.Windows.Forms.Button disconnectButton;
+        private System.Windows.Forms.Label currentGSRLabel;
+        private System.Windows.Forms.Button streamButton;
+        private System.Windows.Forms.Button stopButton;
     }
 }
 
