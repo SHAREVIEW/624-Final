@@ -893,7 +893,7 @@ namespace FormTestApp
 
                             if (m_pressure > 0 && screenEnabled)
                             {
-                                if(!timeoutTimer.Enabled && timeoutEnabled)
+                                if(!timeoutTimer.Enabled && timeoutEnabled && currentSeq != 0)
                                 {
                                     timeoutTimer.Start();
                                 }
