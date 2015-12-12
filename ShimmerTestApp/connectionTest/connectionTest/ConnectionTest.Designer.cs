@@ -51,7 +51,7 @@
             // 
             // connectButton
             // 
-            this.connectButton.Location = new System.Drawing.Point(244, 66);
+            this.connectButton.Location = new System.Drawing.Point(244, 12);
             this.connectButton.Name = "connectButton";
             this.connectButton.Size = new System.Drawing.Size(207, 50);
             this.connectButton.TabIndex = 0;
@@ -62,7 +62,7 @@
             // comPortLabel
             // 
             this.comPortLabel.AutoSize = true;
-            this.comPortLabel.Location = new System.Drawing.Point(12, 81);
+            this.comPortLabel.Location = new System.Drawing.Point(12, 19);
             this.comPortLabel.Name = "comPortLabel";
             this.comPortLabel.Size = new System.Drawing.Size(75, 20);
             this.comPortLabel.TabIndex = 1;
@@ -71,7 +71,7 @@
             // comboBoxComPorts
             // 
             this.comboBoxComPorts.FormattingEnabled = true;
-            this.comboBoxComPorts.Location = new System.Drawing.Point(103, 78);
+            this.comboBoxComPorts.Location = new System.Drawing.Point(93, 16);
             this.comboBoxComPorts.Name = "comboBoxComPorts";
             this.comboBoxComPorts.Size = new System.Drawing.Size(121, 28);
             this.comboBoxComPorts.TabIndex = 3;
@@ -79,88 +79,97 @@
             // labelConnectionState
             // 
             this.labelConnectionState.AutoSize = true;
-            this.labelConnectionState.Location = new System.Drawing.Point(12, 132);
+            this.labelConnectionState.Location = new System.Drawing.Point(12, 87);
             this.labelConnectionState.Name = "labelConnectionState";
-            this.labelConnectionState.Size = new System.Drawing.Size(98, 20);
+            this.labelConnectionState.Size = new System.Drawing.Size(172, 20);
             this.labelConnectionState.TabIndex = 4;
-            this.labelConnectionState.Text = "currentState";
+            this.labelConnectionState.Text = "No shimmer connected";
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(273, 22);
+            this.label2.Location = new System.Drawing.Point(479, 141);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(100, 20);
             this.label2.TabIndex = 6;
             this.label2.Text = "Accel Range";
+            this.label2.Visible = false;
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(536, 22);
+            this.label3.Location = new System.Drawing.Point(691, 144);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(95, 20);
             this.label3.TabIndex = 7;
             this.label3.Text = "Gyro Range";
+            this.label3.Visible = false;
             // 
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(784, 22);
+            this.label4.Location = new System.Drawing.Point(895, 144);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(97, 20);
             this.label4.TabIndex = 8;
             this.label4.Text = "GSR Range";
+            this.label4.Visible = false;
             // 
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(1028, 22);
+            this.label5.Location = new System.Drawing.Point(1104, 147);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(131, 20);
             this.label5.TabIndex = 9;
             this.label5.Text = "Enabled Sensors";
+            this.label5.Visible = false;
             // 
             // textBoxAccelRange
             // 
-            this.textBoxAccelRange.Location = new System.Drawing.Point(379, 16);
+            this.textBoxAccelRange.Location = new System.Drawing.Point(585, 141);
             this.textBoxAccelRange.Name = "textBoxAccelRange";
             this.textBoxAccelRange.Size = new System.Drawing.Size(100, 26);
             this.textBoxAccelRange.TabIndex = 11;
+            this.textBoxAccelRange.Visible = false;
             // 
             // textBoxGyroRange
             // 
-            this.textBoxGyroRange.Location = new System.Drawing.Point(637, 16);
+            this.textBoxGyroRange.Location = new System.Drawing.Point(789, 144);
             this.textBoxGyroRange.Name = "textBoxGyroRange";
             this.textBoxGyroRange.Size = new System.Drawing.Size(100, 26);
             this.textBoxGyroRange.TabIndex = 12;
+            this.textBoxGyroRange.Visible = false;
             // 
             // textBoxGSRRange
             // 
-            this.textBoxGSRRange.Location = new System.Drawing.Point(887, 16);
+            this.textBoxGSRRange.Location = new System.Drawing.Point(998, 144);
             this.textBoxGSRRange.Name = "textBoxGSRRange";
             this.textBoxGSRRange.Size = new System.Drawing.Size(100, 26);
             this.textBoxGSRRange.TabIndex = 13;
+            this.textBoxGSRRange.Visible = false;
             // 
             // textBoxEnabledSensors
             // 
-            this.textBoxEnabledSensors.Location = new System.Drawing.Point(1165, 16);
+            this.textBoxEnabledSensors.Location = new System.Drawing.Point(1241, 147);
             this.textBoxEnabledSensors.Name = "textBoxEnabledSensors";
             this.textBoxEnabledSensors.Size = new System.Drawing.Size(100, 26);
             this.textBoxEnabledSensors.TabIndex = 14;
+            this.textBoxEnabledSensors.Visible = false;
             // 
             // toolStripStatusLabel1
             // 
             this.toolStripStatusLabel1.AutoSize = true;
-            this.toolStripStatusLabel1.Location = new System.Drawing.Point(12, 156);
+            this.toolStripStatusLabel1.Location = new System.Drawing.Point(20, 113);
             this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
             this.toolStripStatusLabel1.Size = new System.Drawing.Size(163, 20);
             this.toolStripStatusLabel1.TabIndex = 15;
             this.toolStripStatusLabel1.Text = "toolStripStatusLabel1";
+            this.toolStripStatusLabel1.Visible = false;
             // 
             // disconnectButton
             // 
-            this.disconnectButton.Location = new System.Drawing.Point(927, 66);
+            this.disconnectButton.Location = new System.Drawing.Point(923, 12);
             this.disconnectButton.Name = "disconnectButton";
             this.disconnectButton.Size = new System.Drawing.Size(207, 50);
             this.disconnectButton.TabIndex = 16;
@@ -171,15 +180,16 @@
             // currentGSRLabel
             // 
             this.currentGSRLabel.AutoSize = true;
-            this.currentGSRLabel.Location = new System.Drawing.Point(1161, 96);
+            this.currentGSRLabel.Location = new System.Drawing.Point(20, 144);
             this.currentGSRLabel.Name = "currentGSRLabel";
             this.currentGSRLabel.Size = new System.Drawing.Size(134, 20);
             this.currentGSRLabel.TabIndex = 17;
             this.currentGSRLabel.Text = "currentGSRLabel";
+            this.currentGSRLabel.Visible = false;
             // 
             // streamButton
             // 
-            this.streamButton.Location = new System.Drawing.Point(475, 66);
+            this.streamButton.Location = new System.Drawing.Point(470, 12);
             this.streamButton.Name = "streamButton";
             this.streamButton.Size = new System.Drawing.Size(207, 50);
             this.streamButton.TabIndex = 18;
@@ -189,7 +199,7 @@
             // 
             // stopButton
             // 
-            this.stopButton.Location = new System.Drawing.Point(701, 66);
+            this.stopButton.Location = new System.Drawing.Point(696, 12);
             this.stopButton.Name = "stopButton";
             this.stopButton.Size = new System.Drawing.Size(207, 50);
             this.stopButton.TabIndex = 19;
@@ -200,24 +210,26 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(12, 22);
+            this.label1.Location = new System.Drawing.Point(248, 141);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(114, 20);
             this.label1.TabIndex = 5;
             this.label1.Text = "Sampling Rate";
+            this.label1.Visible = false;
             // 
             // textBoxSamplingRate
             // 
-            this.textBoxSamplingRate.Location = new System.Drawing.Point(141, 16);
+            this.textBoxSamplingRate.Location = new System.Drawing.Point(368, 138);
             this.textBoxSamplingRate.Name = "textBoxSamplingRate";
             this.textBoxSamplingRate.Size = new System.Drawing.Size(100, 26);
             this.textBoxSamplingRate.TabIndex = 10;
+            this.textBoxSamplingRate.Visible = false;
             // 
             // ConnectionTest
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1459, 185);
+            this.ClientSize = new System.Drawing.Size(1149, 116);
             this.Controls.Add(this.stopButton);
             this.Controls.Add(this.streamButton);
             this.Controls.Add(this.currentGSRLabel);
