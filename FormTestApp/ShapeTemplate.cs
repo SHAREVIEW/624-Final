@@ -17,7 +17,7 @@ namespace FormTestApp
         public static int ARROW = 3;
         public static int STAR = 4;
         public static int LINE = 5;
-        public static int PENTAGON = 6;
+        public static int PSI = 6;
         public static int AT = 7;
         public static int PLUS = 8;
         public static int POUND = 9;
@@ -39,7 +39,7 @@ namespace FormTestApp
             shapes.Add(new Shape("Arrow"));
             shapes.Add(new Shape("Star"));
             shapes.Add(new Shape("Line"));
-            shapes.Add(new Shape("Pentagon"));
+            shapes.Add(new Shape("Psi"));
             shapes.Add(new Shape("@"));
             shapes.Add(new Shape("Plus"));
             shapes.Add(new Shape("Pound"));

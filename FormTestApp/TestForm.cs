@@ -105,7 +105,7 @@ namespace FormTestApp
 
             reenableTimer = new System.Windows.Forms.Timer();
             reenableTimer.Tick += new EventHandler(ReenableScreen);
-            reenableTimer.Interval = 5000;
+            reenableTimer.Interval = 3000;
 
             maxTime = 20;
             timeLeft = maxTime;
@@ -143,6 +143,7 @@ namespace FormTestApp
                         for(int i=0;i<numSequences;i++)
                         {
                             string seqStr = file.ReadLine();
+                            //Console.WriteLine(seqStr);
                             string[] splitStr = seqStr.Split(',');
                             List<int> seq = new List<int>();
                             for(int j=0;j<splitStr.Length;j++)
