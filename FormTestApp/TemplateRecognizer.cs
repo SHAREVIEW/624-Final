@@ -141,7 +141,7 @@ namespace FormTestApp
                     }
                     else
                     {
-                        Console.WriteLine("skip\n");
+                       //Console.WriteLine("skip\n");
                     }
                 }
             }
@@ -496,16 +496,16 @@ namespace FormTestApp
         {
             double score = Double.MaxValue;
             int n = 32;
-            Console.WriteLine("norm points");
+            //Console.WriteLine("norm points");
             List<DrawPoint> normPoints = normalize(givenPoints, n);
-            Console.WriteLine("normPoints has " + normPoints.Count);
+            //Console.WriteLine("normPoints has " + normPoints.Count);
 
             //Console.WriteLine("attempt template 1");
             for (int i=0;i<s.numTemplates;i++)
             {
-                Console.WriteLine("norm template "+i);
+                //Console.WriteLine("norm template "+i);
                 List<DrawPoint> normTemplate = normalize(s.getTemplate(i),n);
-                Console.WriteLine("normTemplate{0} has {1}",i, normTemplate.Count);
+                //Console.WriteLine("normTemplate{0} has {1}",i, normTemplate.Count);
                 
                 //Console.WriteLine("start cloudmatch");
                 double d = GreedyCloudMatch(normPoints, normTemplate, n);
@@ -557,11 +557,11 @@ namespace FormTestApp
                 {
                     file.WriteLine("Failure");
                 }
+                file.WriteLine(points.Count);
                 for (int i = 0; i < points.Count; i++)
                 {
                     file.WriteLine("{0},{1},{2},{3},{4},{5}", i, points[i].X, points[i].Y, points[i].stroke, points[i].time, points[i].pressure);
                 }
-                file.WriteLine("!!");
             }
             Console.WriteLine("Done logging points.");
         }

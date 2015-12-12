@@ -31,6 +31,10 @@
             this.testButton = new System.Windows.Forms.Button();
             this.clearButton = new System.Windows.Forms.Button();
             this.scribblePanel = new System.Windows.Forms.Panel();
+            this.TestingCompleteLabel = new System.Windows.Forms.Label();
+            this.SetCompleteLabel = new System.Windows.Forms.Label();
+            this.SequenceCompleteLabel = new System.Windows.Forms.Label();
+            this.TimeUpLabel = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
             this.testLabel = new System.Windows.Forms.Label();
             this.TemplateToggle = new System.Windows.Forms.Button();
@@ -41,10 +45,7 @@
             this.CurrentTemplateLabel = new System.Windows.Forms.Label();
             this.ToggleRecognize = new System.Windows.Forms.Button();
             this.TimeLeftLabel = new System.Windows.Forms.Label();
-            this.TimeUpLabel = new System.Windows.Forms.Label();
-            this.SequenceCompleteLabel = new System.Windows.Forms.Label();
-            this.SetCompleteLabel = new System.Windows.Forms.Label();
-            this.TestingCompleteLabel = new System.Windows.Forms.Label();
+            this.StartStopTimerButton = new System.Windows.Forms.Button();
             this.scribblePanel.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -88,6 +89,54 @@
             this.scribblePanel.Size = new System.Drawing.Size(1440, 756);
             this.scribblePanel.TabIndex = 3;
             this.scribblePanel.Resize += new System.EventHandler(this.scribblePanel_Resize);
+            // 
+            // TestingCompleteLabel
+            // 
+            this.TestingCompleteLabel.AutoSize = true;
+            this.TestingCompleteLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 72F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.TestingCompleteLabel.ForeColor = System.Drawing.Color.DarkBlue;
+            this.TestingCompleteLabel.Location = new System.Drawing.Point(336, 300);
+            this.TestingCompleteLabel.Name = "TestingCompleteLabel";
+            this.TestingCompleteLabel.Size = new System.Drawing.Size(821, 108);
+            this.TestingCompleteLabel.TabIndex = 3;
+            this.TestingCompleteLabel.Text = "Testing Complete!";
+            this.TestingCompleteLabel.Visible = false;
+            // 
+            // SetCompleteLabel
+            // 
+            this.SetCompleteLabel.AutoSize = true;
+            this.SetCompleteLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 72F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.SetCompleteLabel.ForeColor = System.Drawing.Color.DarkGoldenrod;
+            this.SetCompleteLabel.Location = new System.Drawing.Point(404, 300);
+            this.SetCompleteLabel.Name = "SetCompleteLabel";
+            this.SetCompleteLabel.Size = new System.Drawing.Size(651, 108);
+            this.SetCompleteLabel.TabIndex = 2;
+            this.SetCompleteLabel.Text = "Set Complete!";
+            this.SetCompleteLabel.Visible = false;
+            // 
+            // SequenceCompleteLabel
+            // 
+            this.SequenceCompleteLabel.AutoSize = true;
+            this.SequenceCompleteLabel.BackColor = System.Drawing.Color.Transparent;
+            this.SequenceCompleteLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 72F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.SequenceCompleteLabel.ForeColor = System.Drawing.Color.DarkOliveGreen;
+            this.SequenceCompleteLabel.Location = new System.Drawing.Point(274, 300);
+            this.SequenceCompleteLabel.Name = "SequenceCompleteLabel";
+            this.SequenceCompleteLabel.Size = new System.Drawing.Size(937, 108);
+            this.SequenceCompleteLabel.TabIndex = 1;
+            this.SequenceCompleteLabel.Text = "Sequence Complete!";
+            this.SequenceCompleteLabel.Visible = false;
+            // 
+            // TimeUpLabel
+            // 
+            this.TimeUpLabel.AutoSize = true;
+            this.TimeUpLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 72F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.TimeUpLabel.Location = new System.Drawing.Point(490, 300);
+            this.TimeUpLabel.Name = "TimeUpLabel";
+            this.TimeUpLabel.Size = new System.Drawing.Size(417, 108);
+            this.TimeUpLabel.TabIndex = 0;
+            this.TimeUpLabel.Text = "Time up!";
+            this.TimeUpLabel.Visible = false;
             // 
             // button1
             // 
@@ -192,53 +241,15 @@
             this.TimeLeftLabel.TabIndex = 14;
             this.TimeLeftLabel.Text = "Time left";
             // 
-            // TimeUpLabel
+            // StartStopTimerButton
             // 
-            this.TimeUpLabel.AutoSize = true;
-            this.TimeUpLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 72F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.TimeUpLabel.Location = new System.Drawing.Point(490, 300);
-            this.TimeUpLabel.Name = "TimeUpLabel";
-            this.TimeUpLabel.Size = new System.Drawing.Size(417, 108);
-            this.TimeUpLabel.TabIndex = 0;
-            this.TimeUpLabel.Text = "Time up!";
-            this.TimeUpLabel.Visible = false;
-            // 
-            // SequenceCompleteLabel
-            // 
-            this.SequenceCompleteLabel.AutoSize = true;
-            this.SequenceCompleteLabel.BackColor = System.Drawing.Color.Transparent;
-            this.SequenceCompleteLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 72F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.SequenceCompleteLabel.ForeColor = System.Drawing.Color.DarkOliveGreen;
-            this.SequenceCompleteLabel.Location = new System.Drawing.Point(274, 300);
-            this.SequenceCompleteLabel.Name = "SequenceCompleteLabel";
-            this.SequenceCompleteLabel.Size = new System.Drawing.Size(937, 108);
-            this.SequenceCompleteLabel.TabIndex = 1;
-            this.SequenceCompleteLabel.Text = "Sequence Complete!";
-            this.SequenceCompleteLabel.Visible = false;
-            // 
-            // SetCompleteLabel
-            // 
-            this.SetCompleteLabel.AutoSize = true;
-            this.SetCompleteLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 72F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.SetCompleteLabel.ForeColor = System.Drawing.Color.DarkGoldenrod;
-            this.SetCompleteLabel.Location = new System.Drawing.Point(404, 300);
-            this.SetCompleteLabel.Name = "SetCompleteLabel";
-            this.SetCompleteLabel.Size = new System.Drawing.Size(651, 108);
-            this.SetCompleteLabel.TabIndex = 2;
-            this.SetCompleteLabel.Text = "Set Complete!";
-            this.SetCompleteLabel.Visible = false;
-            // 
-            // TestingCompleteLabel
-            // 
-            this.TestingCompleteLabel.AutoSize = true;
-            this.TestingCompleteLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 72F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.TestingCompleteLabel.ForeColor = System.Drawing.Color.DarkBlue;
-            this.TestingCompleteLabel.Location = new System.Drawing.Point(336, 300);
-            this.TestingCompleteLabel.Name = "TestingCompleteLabel";
-            this.TestingCompleteLabel.Size = new System.Drawing.Size(821, 108);
-            this.TestingCompleteLabel.TabIndex = 3;
-            this.TestingCompleteLabel.Text = "Testing Complete!";
-            this.TestingCompleteLabel.Visible = false;
+            this.StartStopTimerButton.Location = new System.Drawing.Point(1641, 545);
+            this.StartStopTimerButton.Name = "StartStopTimerButton";
+            this.StartStopTimerButton.Size = new System.Drawing.Size(160, 93);
+            this.StartStopTimerButton.TabIndex = 15;
+            this.StartStopTimerButton.Text = "Start/Stop Timer";
+            this.StartStopTimerButton.UseVisualStyleBackColor = true;
+            this.StartStopTimerButton.Click += new System.EventHandler(this.StartStopTimerButton_Click);
             // 
             // TestForm
             // 
@@ -246,6 +257,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(1813, 811);
+            this.Controls.Add(this.StartStopTimerButton);
             this.Controls.Add(this.TimeLeftLabel);
             this.Controls.Add(this.ToggleRecognize);
             this.Controls.Add(this.CurrentTemplateLabel);
@@ -288,6 +300,7 @@
         private System.Windows.Forms.Label SequenceCompleteLabel;
         private System.Windows.Forms.Label SetCompleteLabel;
         private System.Windows.Forms.Label TestingCompleteLabel;
+        private System.Windows.Forms.Button StartStopTimerButton;
     }
 }
 

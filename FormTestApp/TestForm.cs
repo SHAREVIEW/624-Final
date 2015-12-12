@@ -74,6 +74,7 @@ namespace FormTestApp
         private double timerInterval;
 
         private bool screenEnabled;
+        private bool timeoutEnabled;
 
 		 // These constants can be used to force Wintab X/Y data to map into a
 		 // a 10000 x 10000 grid, as an example of mapping tablet data to values
@@ -94,7 +95,7 @@ namespace FormTestApp
 
             compareTimer = new System.Windows.Forms.Timer();
             compareTimer.Tick += new EventHandler(CompareShapes);
-            compareTimer.Interval = 250;
+            compareTimer.Interval = 400;
 
             timerInterval = .1;
 
@@ -117,6 +118,7 @@ namespace FormTestApp
             seqIndex = 0;
 
             screenEnabled = true;
+            timeoutEnabled = true;
 
             currentShape = sets[currentSet][currentSeq][seqIndex];
             CurrentTemplateLabel.Text = String.Format("({0},{1},{2}): {3}", currentSet, currentSeq, seqIndex, Shapes.getShape(currentShape).name);
@@ -890,7 +892,7 @@ namespace FormTestApp
 
                             if (m_pressure > 0 && screenEnabled)
                             {
-                                if(!timeoutTimer.Enabled)
+                                if(!timeoutTimer.Enabled && timeoutEnabled)
                                 {
                                     timeoutTimer.Start();
                                 }
@@ -1089,7 +1091,27 @@ namespace FormTestApp
 
         private void ChangeShape_Click(object sender, EventArgs e)
         {
-            GetNextShape();
+            debugNextShape();
+        }
+
+        private void debugNextShape()
+        {
+            seqIndex++;
+            if (seqIndex >= sets[currentSet][currentSeq].Count)
+            {
+                //sequence completed
+                seqIndex = 0;
+                currentSeq = (currentSeq + 1) % sets[currentSet].Count;
+                if(currentSeq == 0)
+                {
+                    currentSet = (currentSet + 1) % sets.Count;
+                }
+            }
+
+            currentShape = sets[currentSet][currentSeq][seqIndex];
+
+            WipeBoxNoLog();
+            CurrentTemplateLabel.Text = String.Format("({0},{1},{2}): {3}", currentSet, currentSeq, seqIndex, Shapes.getShape(currentShape).name);
         }
 
         private void GetNextShape()
@@ -1204,6 +1226,20 @@ namespace FormTestApp
                 //sequence finished
                 EndDrawingPhase();
                 SequenceCompleteLabel.Visible = true;
+            }
+        }
+
+        private void StartStopTimerButton_Click(object sender, EventArgs e)
+        {
+            timeoutEnabled = !timeoutEnabled;
+            if (timeoutTimer.Enabled)
+            {
+                timeoutTimer.Stop();
+            }
+            else
+            {
+                if(timeLeft != maxTime)
+                    timeoutTimer.Start();
             }
         }
     }

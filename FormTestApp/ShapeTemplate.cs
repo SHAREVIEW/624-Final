@@ -19,6 +19,11 @@ namespace FormTestApp
         public static int LINE = 5;
         public static int PENTAGON = 6;
         public static int AT = 7;
+        public static int PLUS = 8;
+        public static int POUND = 9;
+        public static int PI = 10;
+        public static int EQUALS = 11;
+        public static int INFINITY = 12;
 
         public List<Shape> shapes;
 
@@ -36,6 +41,11 @@ namespace FormTestApp
             shapes.Add(new Shape("Line"));
             shapes.Add(new Shape("Pentagon"));
             shapes.Add(new Shape("@"));
+            shapes.Add(new Shape("Plus"));
+            shapes.Add(new Shape("Pound"));
+            shapes.Add(new Shape("Pi"));
+            shapes.Add(new Shape("Equals"));
+            shapes.Add(new Shape("Infinity"));
 
 
             NUM_SHAPES = shapes.Count;
@@ -151,7 +161,7 @@ namespace FormTestApp
             {
                 if(existed)
                 {
-                    file.WriteLine("");
+                    //file.WriteLine("");
                 }
                 for(int i=readTemplates; i < numTemplates;i++)
                 {
@@ -161,6 +171,7 @@ namespace FormTestApp
                         file.WriteLine("{0},{1},{2}",templates[i][j].X,templates[i][j].Y,templates[i][j].stroke);
                     }
                 }
+                //file.WriteLine("");
             }
             readTemplates = numTemplates;
             Console.WriteLine("done");
