@@ -61,11 +61,19 @@ namespace FormTestApp
         private ShapeTemplate Shapes;
 
         private System.Windows.Forms.Timer compareTimer;
+        private System.Windows.Forms.Timer timeoutTimer;
+        private System.Windows.Forms.Timer reenableTimer;
 
         private List<List<List<int>>> sets;
         private int currentSet;
         private int currentSeq;
         private int seqIndex;
+
+        private double maxTime;
+        private double timeLeft;
+        private double timerInterval;
+
+        private bool screenEnabled;
 
 		 // These constants can be used to force Wintab X/Y data to map into a
 		 // a 10000 x 10000 grid, as an example of mapping tablet data to values
@@ -83,10 +91,24 @@ namespace FormTestApp
             this.FormClosing += new FormClosingEventHandler(TestForm_FormClosing);
             TR = new TemplateRecognizer();
             Shapes = new ShapeTemplate();
+
             compareTimer = new System.Windows.Forms.Timer();
             compareTimer.Tick += new EventHandler(CompareShapes);
             compareTimer.Interval = 250;
-            
+
+            timerInterval = .1;
+
+            timeoutTimer = new System.Windows.Forms.Timer();
+            timeoutTimer.Tick += new EventHandler(TimeTick);
+            timeoutTimer.Interval = (int)(timerInterval * 1000);
+
+            reenableTimer = new System.Windows.Forms.Timer();
+            reenableTimer.Tick += new EventHandler(ReenableScreen);
+            reenableTimer.Interval = 5000;
+
+            maxTime = 20;
+            timeLeft = maxTime;
+
             strokeNum = 0;
             autoRecognize = true;
             loadSets();
@@ -94,8 +116,11 @@ namespace FormTestApp
             currentSeq = 0;
             seqIndex = 0;
 
+            screenEnabled = true;
+
             currentShape = sets[currentSet][currentSeq][seqIndex];
             CurrentTemplateLabel.Text = String.Format("({0},{1},{2}): {3}", currentSet, currentSeq, seqIndex, Shapes.getShape(currentShape).name);
+            TimeLeftLabel.Text = String.Format("Time left: {0:F1} s", timeLeft);
         }
 
         private void loadSets()
@@ -863,8 +888,12 @@ namespace FormTestApp
                             //m_pen.Width = (float)(m_pressure / 200);
                             m_pen.Width = (float)3.0;
 
-                            if (m_pressure > 0)
+                            if (m_pressure > 0 && screenEnabled)
                             {
+                                if(!timeoutTimer.Enabled)
+                                {
+                                    timeoutTimer.Start();
+                                }
                                 if(compareTimer.Enabled)
                                 {
                                     compareTimer.Stop();
@@ -1015,6 +1044,13 @@ namespace FormTestApp
             strokeNum = 0;
         }
 
+        private void WipeBoxWithLog()
+        {
+            TR.ResetPoints(Shapes.getShape(currentShape), false);
+            ClearDisplay();
+            strokeNum = 0;
+        }
+
         //Add a template to the list
         private void button2_Click(object sender, EventArgs e)
         {
@@ -1063,17 +1099,8 @@ namespace FormTestApp
             seqIndex++;
             if(seqIndex >= sets[currentSet][currentSeq].Count)
             {
-                currentSeq++;
-                seqIndex = 0;
-                if(currentSeq >= sets[currentSet].Count)
-                {
-                    currentSet++;
-                    currentSeq = 0;
-                    if(currentSet >= sets.Count)
-                    {
-                        currentSet = 0;
-                    }
-                }
+                //sequence completed
+                SequenceCompleted();
             }
 
             currentShape = sets[currentSet][currentSeq][seqIndex];
@@ -1099,6 +1126,84 @@ namespace FormTestApp
             else
             {
                 Console.WriteLine("Not autorecognizing.");
+            }
+        }
+
+        private void EndDrawingPhase()
+        {
+            compareTimer.Stop();
+            timeoutTimer.Stop();
+            screenEnabled = false;
+            reenableTimer.Start();
+        }
+
+        private void EndTest()
+        {
+            TimeUpLabel.Visible = false;
+            SetCompleteLabel.Visible = false;
+            SequenceCompleteLabel.Visible = false;
+            compareTimer.Stop();
+            timeoutTimer.Stop();
+            screenEnabled = false;
+            TestingCompleteLabel.Visible = true;
+        }
+
+        private void TimeTick(object sender, EventArgs e)
+        {
+            timeLeft -= timerInterval;
+            TimeLeftLabel.Text = String.Format("Time left: {0:F1} s",timeLeft);
+            if(timeLeft < .1)
+            {
+                EndDrawingPhase();
+                WipeBoxWithLog();
+                TimeLeftLabel.Text = "Time left: 0 s";
+                currentSeq = 0;
+                seqIndex = 0;
+                TimeUpLabel.Visible = true;
+                currentSet = (currentSet + 1) % sets.Count;
+                if (currentSet == 0)
+                    EndTest();
+            }
+        }
+
+        private void ReenableScreen(object sender, EventArgs e)
+        {
+            reenableTimer.Stop();
+            TimeUpLabel.Visible = false;
+            SequenceCompleteLabel.Visible = false;
+            SetCompleteLabel.Visible = false;
+            screenEnabled = true;
+            timeLeft = maxTime;
+            TimeLeftLabel.Text = String.Format("Time left: {0:F1} s", timeLeft);
+            currentShape = sets[currentSet][currentSeq][seqIndex];
+            CurrentTemplateLabel.Text = String.Format("({0},{1},{2}): {3}", currentSet, currentSeq, seqIndex, Shapes.getShape(currentShape).name);
+        }
+
+        private void SequenceCompleted()
+        {
+            currentSeq = (currentSeq + 1) % sets[currentSet].Count;
+            seqIndex = 0;
+            WipeBoxNoLog();
+
+            if(currentSeq == 0)
+            {
+                //set finished
+                currentSet = (currentSet + 1) % sets.Count;
+                if(currentSet == 0)
+                {
+                    EndTest();
+                }
+                else
+                {
+                    EndDrawingPhase();
+                    SetCompleteLabel.Visible = true;
+                }
+            }
+            else
+            {
+                //sequence finished
+                EndDrawingPhase();
+                SequenceCompleteLabel.Visible = true;
             }
         }
     }

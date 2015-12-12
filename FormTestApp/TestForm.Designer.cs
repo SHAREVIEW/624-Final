@@ -40,6 +40,12 @@
             this.ChangeShape = new System.Windows.Forms.Button();
             this.CurrentTemplateLabel = new System.Windows.Forms.Label();
             this.ToggleRecognize = new System.Windows.Forms.Button();
+            this.TimeLeftLabel = new System.Windows.Forms.Label();
+            this.TimeUpLabel = new System.Windows.Forms.Label();
+            this.SequenceCompleteLabel = new System.Windows.Forms.Label();
+            this.SetCompleteLabel = new System.Windows.Forms.Label();
+            this.TestingCompleteLabel = new System.Windows.Forms.Label();
+            this.scribblePanel.SuspendLayout();
             this.SuspendLayout();
             // 
             // testButton
@@ -73,6 +79,10 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.scribblePanel.BackColor = System.Drawing.Color.Gainsboro;
             this.scribblePanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.scribblePanel.Controls.Add(this.TestingCompleteLabel);
+            this.scribblePanel.Controls.Add(this.SetCompleteLabel);
+            this.scribblePanel.Controls.Add(this.SequenceCompleteLabel);
+            this.scribblePanel.Controls.Add(this.TimeUpLabel);
             this.scribblePanel.Location = new System.Drawing.Point(195, 43);
             this.scribblePanel.Name = "scribblePanel";
             this.scribblePanel.Size = new System.Drawing.Size(1440, 756);
@@ -164,7 +174,7 @@
             // 
             // ToggleRecognize
             // 
-            this.ToggleRecognize.Location = new System.Drawing.Point(1641, 69);
+            this.ToggleRecognize.Location = new System.Drawing.Point(1641, 130);
             this.ToggleRecognize.Name = "ToggleRecognize";
             this.ToggleRecognize.Size = new System.Drawing.Size(160, 74);
             this.ToggleRecognize.TabIndex = 13;
@@ -172,12 +182,71 @@
             this.ToggleRecognize.UseVisualStyleBackColor = true;
             this.ToggleRecognize.Click += new System.EventHandler(this.ToggleRecognize_Click);
             // 
+            // TimeLeftLabel
+            // 
+            this.TimeLeftLabel.AutoSize = true;
+            this.TimeLeftLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.TimeLeftLabel.Location = new System.Drawing.Point(1640, 43);
+            this.TimeLeftLabel.Name = "TimeLeftLabel";
+            this.TimeLeftLabel.Size = new System.Drawing.Size(94, 25);
+            this.TimeLeftLabel.TabIndex = 14;
+            this.TimeLeftLabel.Text = "Time left";
+            // 
+            // TimeUpLabel
+            // 
+            this.TimeUpLabel.AutoSize = true;
+            this.TimeUpLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 72F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.TimeUpLabel.Location = new System.Drawing.Point(490, 300);
+            this.TimeUpLabel.Name = "TimeUpLabel";
+            this.TimeUpLabel.Size = new System.Drawing.Size(417, 108);
+            this.TimeUpLabel.TabIndex = 0;
+            this.TimeUpLabel.Text = "Time up!";
+            this.TimeUpLabel.Visible = false;
+            // 
+            // SequenceCompleteLabel
+            // 
+            this.SequenceCompleteLabel.AutoSize = true;
+            this.SequenceCompleteLabel.BackColor = System.Drawing.Color.Transparent;
+            this.SequenceCompleteLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 72F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.SequenceCompleteLabel.ForeColor = System.Drawing.Color.DarkOliveGreen;
+            this.SequenceCompleteLabel.Location = new System.Drawing.Point(274, 300);
+            this.SequenceCompleteLabel.Name = "SequenceCompleteLabel";
+            this.SequenceCompleteLabel.Size = new System.Drawing.Size(937, 108);
+            this.SequenceCompleteLabel.TabIndex = 1;
+            this.SequenceCompleteLabel.Text = "Sequence Complete!";
+            this.SequenceCompleteLabel.Visible = false;
+            // 
+            // SetCompleteLabel
+            // 
+            this.SetCompleteLabel.AutoSize = true;
+            this.SetCompleteLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 72F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.SetCompleteLabel.ForeColor = System.Drawing.Color.DarkGoldenrod;
+            this.SetCompleteLabel.Location = new System.Drawing.Point(404, 300);
+            this.SetCompleteLabel.Name = "SetCompleteLabel";
+            this.SetCompleteLabel.Size = new System.Drawing.Size(651, 108);
+            this.SetCompleteLabel.TabIndex = 2;
+            this.SetCompleteLabel.Text = "Set Complete!";
+            this.SetCompleteLabel.Visible = false;
+            // 
+            // TestingCompleteLabel
+            // 
+            this.TestingCompleteLabel.AutoSize = true;
+            this.TestingCompleteLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 72F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.TestingCompleteLabel.ForeColor = System.Drawing.Color.DarkBlue;
+            this.TestingCompleteLabel.Location = new System.Drawing.Point(336, 300);
+            this.TestingCompleteLabel.Name = "TestingCompleteLabel";
+            this.TestingCompleteLabel.Size = new System.Drawing.Size(821, 108);
+            this.TestingCompleteLabel.TabIndex = 3;
+            this.TestingCompleteLabel.Text = "Testing Complete!";
+            this.TestingCompleteLabel.Visible = false;
+            // 
             // TestForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(1813, 811);
+            this.Controls.Add(this.TimeLeftLabel);
             this.Controls.Add(this.ToggleRecognize);
             this.Controls.Add(this.CurrentTemplateLabel);
             this.Controls.Add(this.ChangeShape);
@@ -193,6 +262,8 @@
             this.Name = "TestForm";
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Show;
             this.Text = "Test";
+            this.scribblePanel.ResumeLayout(false);
+            this.scribblePanel.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -212,6 +283,11 @@
         private System.Windows.Forms.Button ChangeShape;
         private System.Windows.Forms.Label CurrentTemplateLabel;
         private System.Windows.Forms.Button ToggleRecognize;
+        private System.Windows.Forms.Label TimeLeftLabel;
+        private System.Windows.Forms.Label TimeUpLabel;
+        private System.Windows.Forms.Label SequenceCompleteLabel;
+        private System.Windows.Forms.Label SetCompleteLabel;
+        private System.Windows.Forms.Label TestingCompleteLabel;
     }
 }
 

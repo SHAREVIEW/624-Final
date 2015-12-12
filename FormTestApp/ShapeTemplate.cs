@@ -22,6 +22,7 @@ namespace FormTestApp
 
         public List<Shape> shapes;
 
+
         public ShapeTemplate()
         {
             //initialize all shapes
