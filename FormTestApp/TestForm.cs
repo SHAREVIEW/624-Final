@@ -128,9 +128,11 @@ namespace FormTestApp
         private void loadSets()
         {
             sets = new List<List<List<int>>>();
-            if (System.IO.File.Exists(@"C:\Users\Admin\Documents\GitHub\624-Final\Templates\Sets.txt"))
+            //@"C:\Users\Admin\Documents\GitHub\624-Final\Templates\Sets.txt"
+            //"..\..\..\..\Templates\Sets.txt"
+            if (System.IO.File.Exists("../../../Templates/Sets.txt"))
             {
-                using (System.IO.StreamReader file = new System.IO.StreamReader(@"C:\Users\Admin\Documents\GitHub\624-Final\Templates\Sets.txt", true))
+                using (System.IO.StreamReader file = new System.IO.StreamReader("../../../Templates/Sets.txt", true))
                 {
                     while(true)
                     {

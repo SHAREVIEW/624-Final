@@ -77,7 +77,7 @@ namespace FormTestApp
 
         public void LoadTemplates()
         {
-            string fileName = String.Format(@"C:\Users\Admin\Documents\GitHub\624-Final\Templates\{0}.txt", name);
+            string fileName = String.Format("../../../Templates/{0}.txt", name);
             if (System.IO.File.Exists(fileName))
             {
                 using (System.IO.StreamReader file = new System.IO.StreamReader(fileName, true))
@@ -155,7 +155,7 @@ namespace FormTestApp
         public void appendTemplatesToFile()
         {
             Console.WriteLine("Dumping {0} {1} templates to file",numTemplates-readTemplates,name);
-            string fileName = String.Format(@"C:\Users\Admin\Documents\GitHub\624-Final\Templates\{0}.txt", name);
+            string fileName = String.Format("../../../Templates/{0}.txt", name);
             bool existed = System.IO.File.Exists(fileName);
             using (System.IO.StreamWriter file = new System.IO.StreamWriter(fileName, true))
             {
