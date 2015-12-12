@@ -73,6 +73,7 @@ namespace connectionTest
 
         //bool for handling connection for the first time
         private bool firstTime = true;
+        private System.Windows.Forms.Timer firstTimeTimer;
 
         //use long constructor here
         public ShimmerSDBT ShimmerDevice = new ShimmerSDBT("Shimmer", "");
@@ -122,6 +123,18 @@ namespace connectionTest
                     ShimmerDevice.StartConnectThread();
                 }
             }
+
+        }
+
+        public void firstTimeCycleConnect(Object sender, EventArgs e)
+        {
+            firstTimeTimer.Stop();
+            Console.WriteLine("Prepping to stop streaming");
+            ShimmerDevice.StopStreaming();
+            Console.WriteLine("prepping to disconnect");
+            Disconnect();
+            firstTime = false;
+            Connect();
         }
 
         private void connectButton_Click(object sender, EventArgs e)
@@ -154,7 +167,10 @@ namespace connectionTest
                         //labelConnectionState.Text = "Connected";
                         ChangeStatusLabel("Connected to " + ShimmerDevice.GetComPort() + ". Firmware Version: " + ShimmerDevice.GetFirmwareVersionFullName());
                         //ChangeStatusLabel("Connected");
-                        textBoxAccelRange.Text = "" + ShimmerDevice.GetAccelRange();
+                        //firstTimeTimer = new System.Windows.Forms.Timer();
+                        //firstTimeTimer.Tick += new EventHandler(firstTimeCycleConnect);
+                        //firstTimeTimer.Interval = (int)(5000);
+                        //firstTimeTimer.Start();
                     }
                     else if (state == (int)Shimmer.SHIMMER_STATE_CONNECTING)
                     {

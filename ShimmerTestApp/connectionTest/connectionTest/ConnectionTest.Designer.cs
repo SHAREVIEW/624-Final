@@ -32,12 +32,10 @@
             this.comPortLabel = new System.Windows.Forms.Label();
             this.comboBoxComPorts = new System.Windows.Forms.ComboBox();
             this.labelConnectionState = new System.Windows.Forms.Label();
-            this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
-            this.textBoxSamplingRate = new System.Windows.Forms.TextBox();
             this.textBoxAccelRange = new System.Windows.Forms.TextBox();
             this.textBoxGyroRange = new System.Windows.Forms.TextBox();
             this.textBoxGSRRange = new System.Windows.Forms.TextBox();
@@ -47,6 +45,8 @@
             this.currentGSRLabel = new System.Windows.Forms.Label();
             this.streamButton = new System.Windows.Forms.Button();
             this.stopButton = new System.Windows.Forms.Button();
+            this.label1 = new System.Windows.Forms.Label();
+            this.textBoxSamplingRate = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // connectButton
@@ -85,15 +85,6 @@
             this.labelConnectionState.TabIndex = 4;
             this.labelConnectionState.Text = "currentState";
             // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(12, 22);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(114, 20);
-            this.label1.TabIndex = 5;
-            this.label1.Text = "Sampling Rate";
-            // 
             // label2
             // 
             this.label2.AutoSize = true;
@@ -129,13 +120,6 @@
             this.label5.Size = new System.Drawing.Size(131, 20);
             this.label5.TabIndex = 9;
             this.label5.Text = "Enabled Sensors";
-            // 
-            // textBoxSamplingRate
-            // 
-            this.textBoxSamplingRate.Location = new System.Drawing.Point(141, 16);
-            this.textBoxSamplingRate.Name = "textBoxSamplingRate";
-            this.textBoxSamplingRate.Size = new System.Drawing.Size(100, 26);
-            this.textBoxSamplingRate.TabIndex = 10;
             // 
             // textBoxAccelRange
             // 
@@ -213,6 +197,22 @@
             this.stopButton.UseVisualStyleBackColor = true;
             this.stopButton.Click += new System.EventHandler(this.stopButton_Click);
             // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(12, 22);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(114, 20);
+            this.label1.TabIndex = 5;
+            this.label1.Text = "Sampling Rate";
+            // 
+            // textBoxSamplingRate
+            // 
+            this.textBoxSamplingRate.Location = new System.Drawing.Point(141, 16);
+            this.textBoxSamplingRate.Name = "textBoxSamplingRate";
+            this.textBoxSamplingRate.Size = new System.Drawing.Size(100, 26);
+            this.textBoxSamplingRate.TabIndex = 10;
+            // 
             // ConnectionTest
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
@@ -251,12 +251,10 @@
         private System.Windows.Forms.Label comPortLabel;
         private System.Windows.Forms.ComboBox comboBoxComPorts;
         private System.Windows.Forms.Label labelConnectionState;
-        private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.TextBox textBoxSamplingRate;
         private System.Windows.Forms.TextBox textBoxAccelRange;
         private System.Windows.Forms.TextBox textBoxGyroRange;
         private System.Windows.Forms.TextBox textBoxGSRRange;
@@ -266,6 +264,8 @@
         private System.Windows.Forms.Label currentGSRLabel;
         private System.Windows.Forms.Button streamButton;
         private System.Windows.Forms.Button stopButton;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.TextBox textBoxSamplingRate;
     }
 }
 
