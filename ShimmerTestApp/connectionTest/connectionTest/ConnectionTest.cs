@@ -219,11 +219,11 @@ namespace connectionTest
                         //Console.WriteLine(names[i]);
                     }
 
-                    Console.WriteLine("Current Raw GSR Readings: " + data[gsrRawIndex]);
-                    Console.WriteLine("Current Calculated GSR Readings: " + data[gsrCalIndex]);
-                    Console.WriteLine("Current Raw PPG Readings: " + data[adcRawIndex]);
-                    Console.WriteLine("Current Calculated PPG Readings: " + data[adcCalIndex]);
-                    Console.WriteLine();
+                    //Console.WriteLine("Current Raw GSR Readings: " + data[gsrRawIndex]);
+                    //Console.WriteLine("Current Calculated GSR Readings: " + data[gsrCalIndex]);
+                    //Console.WriteLine("Current Raw PPG Readings: " + data[adcRawIndex]);
+                    //Console.WriteLine("Current Calculated PPG Readings: " + data[adcCalIndex]);
+                    //Console.WriteLine();
                     break;
                 case (int)Shimmer.ShimmerIdentifier.MSG_IDENTIFIER_NOTIFICATION_MESSAGE:
                     string message = (string)eventArgs.getObject();
@@ -445,15 +445,16 @@ namespace connectionTest
 
             using (output)
             {
-                output.WriteLine("Timestamp_Hour, Timestamp_Minute, Timestamp_Second, Timestamp_Millisecond, Current_Internal_ADC_A13_Raw, Current_Internal_ADC_A13_Cal, Current_GSR_Raw, Current_GSR_Calculated");
+                output.WriteLine("Timestamp_Unix, Timestamp_Hour, Timestamp_Minute, Timestamp_Second, Timestamp_Millisecond, Current_Internal_ADC_A13_Raw, Current_Internal_ADC_A13_Cal, Current_GSR_Raw, Current_GSR_Calculated");
                 //writeLogToFile(DateTime.Now, 0,-255);
                 for (int i = 0; i < storedClusterData.Count; i++)
                 {
+                    Int32 unixTimestamp = (Int32)(storedClusterData[i].currentTime.Subtract(new DateTime(1970, 1, 1))).TotalSeconds;
                     int rawGSRIndex = storedClusterData[i].receivedCluster.GetIndex("GSR", "RAW");
                     int calGSRIndex = storedClusterData[i].receivedCluster.GetIndex("GSR", "CAL");
                     int adcRawIndex = storedClusterData[i].receivedCluster.GetIndex("Internal ADC A13", "RAW");
                     int adcCalIndex = storedClusterData[i].receivedCluster.GetIndex("Internal ADC A13", "CAL");
-                    lineToWrite = String.Format("{0}, {1}, {2}, {3}, {4}, {5}, {6}, {7}", storedClusterData[i].currentTime.Hour, storedClusterData[i].currentTime.Minute,
+                    lineToWrite = String.Format("{0}, {1}, {2}, {3}, {4}, {5}, {6}, {7}, {8}", unixTimestamp, storedClusterData[i].currentTime.Hour, storedClusterData[i].currentTime.Minute,
                         storedClusterData[i].currentTime.Second, storedClusterData[i].currentTime.Millisecond, storedClusterData[i].receivedCluster.GetData()[adcRawIndex],
                         storedClusterData[i].receivedCluster.GetData()[adcCalIndex], storedClusterData[i].receivedCluster.GetData()[rawGSRIndex], 
                         storedClusterData[i].receivedCluster.GetData()[calGSRIndex]);

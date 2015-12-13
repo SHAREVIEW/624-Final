@@ -904,12 +904,14 @@ namespace FormTestApp
                                     compareTimer.Stop();
                                 }
 
+                                uint unixTimestamp = (uint)(DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1))).TotalSeconds;
+
                                 if (m_pkTime - m_pkTimeLast > 50)
                                 {
                                     Console.WriteLine("new stroke");
                                     m_graphics.DrawRectangle(m_pen, clientPoint.X, clientPoint.Y, 1, 1);
                                     strokeNum++;
-                                    DrawPoint dp = new DrawPoint(clientPoint.X, clientPoint.Y, strokeNum, m_pkTime, m_pressure);
+                                    DrawPoint dp = new DrawPoint(clientPoint.X, clientPoint.Y, strokeNum, unixTimestamp, m_pressure);
                                     TR.AddStartPoint(dp);
                                     m_lastPoint = clientPoint;
                                     m_pkTimeLast = m_pkTime;
@@ -917,7 +919,7 @@ namespace FormTestApp
                                 else
                                 {
                                     m_graphics.DrawLine(m_pen, clientPoint, m_lastPoint);
-                                    DrawPoint dp = new DrawPoint(clientPoint.X, clientPoint.Y, strokeNum, m_pkTime, m_pressure);
+                                    DrawPoint dp = new DrawPoint(clientPoint.X, clientPoint.Y, strokeNum, unixTimestamp, m_pressure);
                                     TR.AddPoint(dp);
                                     compareTimer.Start();
                                     m_lastPoint = clientPoint;
@@ -973,7 +975,7 @@ namespace FormTestApp
                 Console.WriteLine("Success");
                 //label1.Visible = true;
                 //TemplateNoLabel.Visible = false;
-                DrawGrid(Color.Green);
+                //DrawGrid(Color.Green);
                 return true;
             }
             else

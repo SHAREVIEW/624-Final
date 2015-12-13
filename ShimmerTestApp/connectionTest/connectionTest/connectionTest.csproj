@@ -38,7 +38,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="ShimmerClosedLibraryRev0_4">
-      <HintPath>..\..\..\..\..\Shimmer\Software Development\Csharp\Shimmer_Csharp_API_v0.4\ShimmerCapture\libs\ShimmerClosedLibraryRev0_4.dll</HintPath>
+      <HintPath>libs\ShimmerClosedLibraryRev0_4.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
