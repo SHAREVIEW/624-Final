@@ -223,6 +223,7 @@
             // 
             // ToggleRecognize
             // 
+            this.ToggleRecognize.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.ToggleRecognize.Location = new System.Drawing.Point(1641, 130);
             this.ToggleRecognize.Name = "ToggleRecognize";
             this.ToggleRecognize.Size = new System.Drawing.Size(160, 74);
@@ -233,6 +234,7 @@
             // 
             // TimeLeftLabel
             // 
+            this.TimeLeftLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.TimeLeftLabel.AutoSize = true;
             this.TimeLeftLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.TimeLeftLabel.Location = new System.Drawing.Point(1640, 43);
@@ -243,6 +245,7 @@
             // 
             // StartStopTimerButton
             // 
+            this.StartStopTimerButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.StartStopTimerButton.Location = new System.Drawing.Point(1641, 545);
             this.StartStopTimerButton.Name = "StartStopTimerButton";
             this.StartStopTimerButton.Size = new System.Drawing.Size(160, 93);
