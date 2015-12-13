@@ -250,7 +250,7 @@
             this.Controls.Add(this.comPortLabel);
             this.Controls.Add(this.connectButton);
             this.Name = "ConnectionTest";
-            this.Text = "Form1";
+            this.Text = "Connect to Shimmer";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
