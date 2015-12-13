@@ -22,7 +22,7 @@ namespace FormTestApp
             int iter = 0;
             do
             {
-                fileName = String.Format(@"C:\Users\Admin\Documents\GitHub\624-Final\Logs\PointLog-{0}.txt", iter);
+                fileName = String.Format("../../../Logs/PointLog-{0}.txt", iter);
                 iter++;
             } while (System.IO.File.Exists(fileName));
 
