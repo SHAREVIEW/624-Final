@@ -442,7 +442,7 @@ namespace connectionTest
         public void writeLogToFile(biometricCluster bc)
         {
             String lineToWrite = "";
-            Console.WriteLine("write to file");
+            //Console.WriteLine("write to file");
             using (StreamWriter output = new StreamWriter((filePath), true))
             {
                 Int32 unixTimestamp = (Int32)(bc.currentTime.Subtract(new DateTime(1970, 1, 1))).TotalSeconds;
@@ -450,14 +450,14 @@ namespace connectionTest
                 int calGSRIndex = bc.receivedCluster.GetIndex("GSR", "CAL");
                 int adcRawIndex = bc.receivedCluster.GetIndex("Internal ADC A13", "RAW");
                 int adcCalIndex = bc.receivedCluster.GetIndex("Internal ADC A13", "CAL");
-                Console.WriteLine("making string");
+                //Console.WriteLine("making string");
                 lineToWrite = String.Format("{0}, {1}, {2}, {3}, {4}, {5}, {6}, {7}, {8}", unixTimestamp, bc.currentTime.Hour, bc.currentTime.Minute,
                     bc.currentTime.Second, bc.currentTime.Millisecond, bc.receivedCluster.GetData()[adcRawIndex],
                     bc.receivedCluster.GetData()[adcCalIndex], bc.receivedCluster.GetData()[rawGSRIndex],
                     bc.receivedCluster.GetData()[calGSRIndex]);
-                Console.WriteLine("actually writing to file");
+                //Console.WriteLine("actually writing to file");
                 output.WriteLine(lineToWrite);
-                Console.WriteLine("done");
+                //Console.WriteLine("done");
             }
         }
 
@@ -475,9 +475,9 @@ namespace connectionTest
             StreamWriter output = new StreamWriter(filePath);
             using (output)
             {
-                Console.WriteLine("actually writing to file");
+                //Console.WriteLine("actually writing to file");
                 output.WriteLine("Timestamp_Unix, Timestamp_Hour, Timestamp_Minute, Timestamp_Second, Timestamp_Millisecond, Current_Internal_ADC_A13_Raw, Current_Internal_ADC_A13_Cal, Current_GSR_Raw, Current_GSR_Calculated");
-                Console.WriteLine("we wrote");
+                //Console.WriteLine("we wrote");
             }
         }
 
