@@ -76,6 +76,9 @@ namespace FormTestApp
         private bool screenEnabled;
         private bool timeoutEnabled;
 
+        private bool debugButtonsOn;
+        private bool showCurrentShape;
+
 		 // These constants can be used to force Wintab X/Y data to map into a
 		 // a 10000 x 10000 grid, as an example of mapping tablet data to values
 		 // that make sense for your application.
@@ -121,8 +124,14 @@ namespace FormTestApp
             timeoutEnabled = true;
 
             currentShape = sets[currentSet][currentSeq][seqIndex];
-            CurrentTemplateLabel.Text = String.Format("({0},{1},{2}): {3}", currentSet, currentSeq, seqIndex, Shapes.getShape(currentShape).name);
+            CurrentTemplateLabel.Text = String.Format("{3}", currentSet, currentSeq, seqIndex, Shapes.getShape(currentShape).name);
             TimeLeftLabel.Text = String.Format("Time left: {0:F1} s", timeLeft);
+
+            debugButtonsOn = false;
+            showCurrentShape = false;
+
+            this.KeyPreview = true;
+            this.KeyPress += new KeyPressEventHandler(Form1_KeyPress);
         }
 
         private void loadSets()
@@ -173,51 +182,7 @@ namespace FormTestApp
         }
 
         ///////////////////////////////////////////////////////////////////////
-        private void testButton_Click(object sender, EventArgs e)
-        {
-            // Close whatever context is open.
-            CloseCurrentContext();
-
-            if (m_showingTextButton)
-            {   
-                // Clear display and shut off scribble if it's on.
-                ClearDisplay();
-                Enable_Scribble(false); 
-         
-                // Set up to STOP the next time button is pushed.
-                testButton.Text = "STOP";
-                testButton.BackColor = Color.Orange;
-                testLabel.Text = "Press STOP button to stop testing. (May take a few seconds to stop.)";
-                m_showingTextButton = false;
-             
-                // Run the tests
-                Test_IsWintabAvailable();
-                Test_GetDeviceInfo();
-                Test_GetDefaultDigitizingContext();
-                Test_GetDefaultSystemContext();
-                Test_GetDefaultDeviceIndex();
-                Test_GetDeviceAxis();
-                Test_GetDeviceOrientation();
-                Test_GetDeviceRotation();
-                Test_GetNumberOfDevices();
-                Test_IsStylusActive();
-                Test_GetStylusName();
-                Test_GetExtensionMask();
-                Test_Context();
-                Test_DataPacketQueueSize();
-                Test_MaxPressure();
-                Test_GetDataPackets(1);
-                Test_QueryDataPackets();     // opens up another form
-
-            }
-            else
-            {
-                testButton.Text = "Test...";
-                testButton.BackColor = Color.Lime;
-                testLabel.Text = "Press Test... button to start testing.";
-                m_showingTextButton = true;
-            }
-        }
+        
 
         private void FakeEnable()
         {
@@ -691,8 +656,7 @@ namespace FormTestApp
 
                 //scribbleButton.BackColor = Color.Lime;
                 //scribbleLabel.Visible = true;
-                testButton.BackColor = Color.WhiteSmoke;
-                testLabel.Text = "Press Test... button to start testing.";
+               
 
                 // You should now be able to scribble in the scribblePanel.
             }
@@ -710,8 +674,7 @@ namespace FormTestApp
 
                 //scribbleButton.BackColor = Color.WhiteSmoke;
                 //scribbleLabel.Visible = false;
-                testButton.BackColor = Color.Lime;
-                testLabel.Text = "Press Test button and hold pen on tablet to start testing.";
+                
             }
         }
 
@@ -1116,7 +1079,7 @@ namespace FormTestApp
             currentShape = sets[currentSet][currentSeq][seqIndex];
 
             WipeBoxNoLog();
-            CurrentTemplateLabel.Text = String.Format("({0},{1},{2}): {3}", currentSet, currentSeq, seqIndex, Shapes.getShape(currentShape).name);
+            UpdateCurrentShape();
         }
 
         private void GetNextShape()
@@ -1130,10 +1093,9 @@ namespace FormTestApp
                 SequenceCompleted();
             }
 
-            currentShape = sets[currentSet][currentSeq][seqIndex];
 
             WipeBoxNoLog();
-            CurrentTemplateLabel.Text = String.Format("({0},{1},{2}): {3}",currentSet,currentSeq,seqIndex,Shapes.getShape(currentShape).name);
+            UpdateCurrentShape();
         }
 
         private void TemplateDump_Click(object sender, EventArgs e)
@@ -1202,8 +1164,7 @@ namespace FormTestApp
             screenEnabled = true;
             timeLeft = maxTime;
             TimeLeftLabel.Text = String.Format("Time left: {0:F1} s", timeLeft);
-            currentShape = sets[currentSet][currentSeq][seqIndex];
-            CurrentTemplateLabel.Text = String.Format("({0},{1},{2}): {3}", currentSet, currentSeq, seqIndex, Shapes.getShape(currentShape).name);
+            UpdateCurrentShape();
         }
 
         private void SequenceCompleted()
@@ -1245,6 +1206,60 @@ namespace FormTestApp
             {
                 if(timeLeft != maxTime)
                     timeoutTimer.Start();
+            }
+        }
+
+        private void ClearButton2_Click(object sender, EventArgs e)
+        {
+            ClearDisplay();
+            TR.ResetPoints(Shapes.getShape(currentShape), false);
+            strokeNum = 0;
+        }
+
+        private void UpdateCurrentShape()
+        {
+            currentShape = sets[currentSet][currentSeq][seqIndex];
+            CurrentTemplateLabel.Text = String.Format("{3} - {4} left", currentSet, currentSeq, seqIndex, Shapes.getShape(currentShape).name, sets[currentSet][currentSeq].Count - seqIndex);
+        }
+
+        void Form1_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (e.KeyChar == 'q')
+            {
+                debugButtonsOn = !debugButtonsOn;
+                if(debugButtonsOn)
+                {
+                    AddTemplate.Enabled = true;
+                    AddTemplate.Visible = true;
+                    TemplateDump.Enabled = true;
+                    TemplateDump.Visible = true;
+                    ChangeShape.Enabled = true;
+                    ChangeShape.Visible = true;
+                }
+                else
+                {
+                    AddTemplate.Enabled = false;
+                    AddTemplate.Visible = false;
+                    TemplateDump.Enabled = false;
+                    TemplateDump.Visible = false;
+                    ChangeShape.Enabled = false;
+                    ChangeShape.Visible = false;
+                }
+            }
+            if(e.KeyChar == 't')
+            {
+                showCurrentShape = !showCurrentShape;
+                if(showCurrentShape)
+                {
+                    CurrentTemplateLabel.Visible = true;
+                    CurrentTemplateLabel.Enabled = true;
+                    UpdateCurrentShape();
+                }
+                else
+                {
+                    CurrentTemplateLabel.Visible = false;
+                    CurrentTemplateLabel.Enabled = false;
+                }
             }
         }
     }
