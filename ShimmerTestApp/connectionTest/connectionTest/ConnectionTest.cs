@@ -207,6 +207,9 @@ namespace connectionTest
                     bc.receivedCluster = objectCluster;
                     storedClusterData.Add(bc);
 
+                    //print log to file
+                    writeLogToFile(bc);
+
                     Console.WriteLine("Current Timestamp: " + timestamp);
 
                     int gsrRawIndex = objectCluster.GetIndex("GSR", "RAW");
@@ -292,9 +295,9 @@ namespace connectionTest
             }
             DeviceConnected = false;
             ShimmerDevice.Disconnect();
-            if (streamingActuallyOccurred())
+            //if (streamingActuallyOccurred())
             {
-                handleLogging();
+            //    handleLogging();
             }
 
         }
@@ -316,15 +319,16 @@ namespace connectionTest
             lastTimeStreamStarted = DateTime.Now;
             Console.WriteLine("Attempting to stream");
             ShimmerDevice.StartStreamingandLog();
+            createLogFile(lastTimeStreamStarted);
             //ShimmerDevice.StartStreaming();
         }
 
         private void stopStream()
         {
             ShimmerDevice.StopStreaming();
-            if (streamingActuallyOccurred())
+            //if (streamingActuallyOccurred())
             {
-                handleLogging();
+            //    handleLogging();
             }
         }
 
@@ -433,6 +437,48 @@ namespace connectionTest
             writeLogFile(lastTimeStreamStarted);
             Console.WriteLine("Finished writing logs to file; deleting old logs");
             storedClusterData.Clear();
+        }
+
+        public void writeLogToFile(biometricCluster bc)
+        {
+            String lineToWrite = "";
+            Console.WriteLine("write to file");
+            using (StreamWriter output = new StreamWriter((filePath), true))
+            {
+                Int32 unixTimestamp = (Int32)(bc.currentTime.Subtract(new DateTime(1970, 1, 1))).TotalSeconds;
+                int rawGSRIndex = bc.receivedCluster.GetIndex("GSR", "RAW");
+                int calGSRIndex = bc.receivedCluster.GetIndex("GSR", "CAL");
+                int adcRawIndex = bc.receivedCluster.GetIndex("Internal ADC A13", "RAW");
+                int adcCalIndex = bc.receivedCluster.GetIndex("Internal ADC A13", "CAL");
+                Console.WriteLine("making string");
+                lineToWrite = String.Format("{0}, {1}, {2}, {3}, {4}, {5}, {6}, {7}, {8}", unixTimestamp, bc.currentTime.Hour, bc.currentTime.Minute,
+                    bc.currentTime.Second, bc.currentTime.Millisecond, bc.receivedCluster.GetData()[adcRawIndex],
+                    bc.receivedCluster.GetData()[adcCalIndex], bc.receivedCluster.GetData()[rawGSRIndex],
+                    bc.receivedCluster.GetData()[calGSRIndex]);
+                Console.WriteLine("actually writing to file");
+                output.WriteLine(lineToWrite);
+                Console.WriteLine("done");
+            }
+        }
+
+        public void createLogFile(DateTime rightNow)
+        {
+            filePath = basePath + "Biometrics log-" + rightNow.Month + "-" + rightNow.Day + "-"
+                + rightNow.Year + "-" + rightNow.Hour + "-"
+                    + rightNow.Minute + "-" + rightNow.Second + ".csv";
+            Console.WriteLine(filePath);
+
+            System.IO.FileInfo file = new System.IO.FileInfo(filePath);
+            file.Directory.Create(); // If the directory already exists, this method does nothing.
+            //System.IO.File.WriteAllText(file.FullName, content);
+
+            StreamWriter output = new StreamWriter(filePath);
+            using (output)
+            {
+                Console.WriteLine("actually writing to file");
+                output.WriteLine("Timestamp_Unix, Timestamp_Hour, Timestamp_Minute, Timestamp_Second, Timestamp_Millisecond, Current_Internal_ADC_A13_Raw, Current_Internal_ADC_A13_Cal, Current_GSR_Raw, Current_GSR_Calculated");
+                Console.WriteLine("we wrote");
+            }
         }
 
         public void writeLogFile(DateTime rightNow)
