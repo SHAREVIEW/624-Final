@@ -34,13 +34,13 @@
             this.SetCompleteLabel = new System.Windows.Forms.Label();
             this.SequenceCompleteLabel = new System.Windows.Forms.Label();
             this.TimeUpLabel = new System.Windows.Forms.Label();
+            this.CurrentTemplateLabel = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
             this.TemplateToggle = new System.Windows.Forms.Button();
             this.AddTemplate = new System.Windows.Forms.Button();
             this.ClearTemplates = new System.Windows.Forms.Button();
             this.TemplateDump = new System.Windows.Forms.Button();
             this.ChangeShape = new System.Windows.Forms.Button();
-            this.CurrentTemplateLabel = new System.Windows.Forms.Label();
             this.ToggleRecognize = new System.Windows.Forms.Button();
             this.TimeLeftLabel = new System.Windows.Forms.Label();
             this.StartStopTimerButton = new System.Windows.Forms.Button();
@@ -127,6 +127,17 @@
             this.TimeUpLabel.Text = "Time up!";
             this.TimeUpLabel.Visible = false;
             // 
+            // CurrentTemplateLabel
+            // 
+            this.CurrentTemplateLabel.AutoSize = true;
+            this.CurrentTemplateLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 36F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.CurrentTemplateLabel.Location = new System.Drawing.Point(640, -1);
+            this.CurrentTemplateLabel.Name = "CurrentTemplateLabel";
+            this.CurrentTemplateLabel.Size = new System.Drawing.Size(385, 55);
+            this.CurrentTemplateLabel.TabIndex = 12;
+            this.CurrentTemplateLabel.Text = "CurrentTemplate";
+            this.CurrentTemplateLabel.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            // 
             // button1
             // 
             this.button1.BackColor = System.Drawing.Color.WhiteSmoke;
@@ -202,19 +213,6 @@
             this.ChangeShape.UseVisualStyleBackColor = true;
             this.ChangeShape.Visible = false;
             this.ChangeShape.Click += new System.EventHandler(this.ChangeShape_Click);
-            // 
-            // CurrentTemplateLabel
-            // 
-            this.CurrentTemplateLabel.AutoSize = true;
-            this.CurrentTemplateLabel.Enabled = false;
-            this.CurrentTemplateLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 36F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.CurrentTemplateLabel.Location = new System.Drawing.Point(640, -1);
-            this.CurrentTemplateLabel.Name = "CurrentTemplateLabel";
-            this.CurrentTemplateLabel.Size = new System.Drawing.Size(385, 55);
-            this.CurrentTemplateLabel.TabIndex = 12;
-            this.CurrentTemplateLabel.Text = "CurrentTemplate";
-            this.CurrentTemplateLabel.TextAlign = System.Drawing.ContentAlignment.TopCenter;
-            this.CurrentTemplateLabel.Visible = false;
             // 
             // ToggleRecognize
             // 

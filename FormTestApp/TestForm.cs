@@ -1235,6 +1235,10 @@ namespace FormTestApp
                     TemplateDump.Visible = true;
                     ChangeShape.Enabled = true;
                     ChangeShape.Visible = true;
+                    ToggleRecognize.Enabled = true;
+                    ToggleRecognize.Visible = true;
+                    TemplateToggle.Enabled = true;
+                    TemplateToggle.Visible = true;
                 }
                 else
                 {
@@ -1244,6 +1248,10 @@ namespace FormTestApp
                     TemplateDump.Visible = false;
                     ChangeShape.Enabled = false;
                     ChangeShape.Visible = false;
+                    ToggleRecognize.Enabled = false;
+                    ToggleRecognize.Visible = false;
+                    TemplateToggle.Enabled = false;
+                    TemplateToggle.Visible = false;
                 }
             }
             if(e.KeyChar == 't')
