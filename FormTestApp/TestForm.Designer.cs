@@ -258,7 +258,7 @@
             this.ClearButton2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.ClearButton2.BackColor = System.Drawing.Color.Gray;
             this.ClearButton2.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ClearButton2.Location = new System.Drawing.Point(21, 344);
+            this.ClearButton2.Location = new System.Drawing.Point(28, 344);
             this.ClearButton2.Name = "ClearButton2";
             this.ClearButton2.Size = new System.Drawing.Size(160, 100);
             this.ClearButton2.TabIndex = 16;

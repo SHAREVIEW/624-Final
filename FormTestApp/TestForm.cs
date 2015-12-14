@@ -128,7 +128,7 @@ namespace FormTestApp
             TimeLeftLabel.Text = String.Format("Time left: {0:F1} s", timeLeft);
 
             debugButtonsOn = false;
-            showCurrentShape = false;
+            showCurrentShape = true;
 
             this.KeyPreview = true;
             this.KeyPress += new KeyPressEventHandler(Form1_KeyPress);
