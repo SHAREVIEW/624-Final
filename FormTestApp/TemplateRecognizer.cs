@@ -539,7 +539,7 @@ namespace FormTestApp
             return points;
         }
 
-        public void logPoints(Shape currentShape, bool success)
+        public void logPoints(Shape currentShape, bool success, int curSet, int curSeq, int shapeInd)
         {
             // Append new text to an existing file.
             // The using statement automatically flushes AND CLOSES the stream and calls 
@@ -560,7 +560,7 @@ namespace FormTestApp
                 file.WriteLine(points.Count);
                 for (int i = 0; i < points.Count; i++)
                 {
-                    file.WriteLine("{0},{1},{2},{3},{4},{5}", i, points[i].X, points[i].Y, points[i].stroke, points[i].time, points[i].pressure);
+                    file.WriteLine("{0},{1},{2},{3},{4},{5},{6},{7},{8}", i, points[i].X, points[i].Y, points[i].stroke, points[i].time, points[i].pressure,curSet,curSeq,shapeInd);
                 }
             }
             Console.WriteLine("Done logging points.");
@@ -572,9 +572,9 @@ namespace FormTestApp
             points.Clear();
         }
 
-        public void ResetPoints(Shape currentShape, bool success)
+        public void ResetPoints(Shape currentShape, bool success, int curSet, int curSeq, int shapeInd)
         {
-            logPoints(currentShape, success);
+            logPoints(currentShape, success, curSet, curSeq, shapeInd);
             points.Clear();
         }
 

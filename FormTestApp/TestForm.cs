@@ -218,7 +218,7 @@ namespace FormTestApp
         private void clearButton_Click(object sender, EventArgs e)
         {
             ClearDisplay();
-            TR.ResetPoints(Shapes.getShape(currentShape), false);
+            TR.ResetPoints(Shapes.getShape(currentShape), false, currentSet, currentSeq, seqIndex);
             strokeNum = 0;
         }
 
@@ -1016,7 +1016,7 @@ namespace FormTestApp
 
         private void WipeBoxWithLog()
         {
-            TR.ResetPoints(Shapes.getShape(currentShape), false);
+            TR.ResetPoints(Shapes.getShape(currentShape), false, currentSet, currentSeq, seqIndex);
             ClearDisplay();
             strokeNum = 0;
         }
@@ -1049,7 +1049,7 @@ namespace FormTestApp
                 Console.WriteLine("Attempting recognition.\n");
                 if(AttemptRecognition())
                 {
-                    TR.ResetPoints(Shapes.getShape(currentShape), true);
+                    TR.ResetPoints(Shapes.getShape(currentShape), true, currentSet, currentSeq, seqIndex);
                     scribblePanel.Invalidate();
                     strokeNum = 0;
                     GetNextShape();
@@ -1212,7 +1212,7 @@ namespace FormTestApp
         private void ClearButton2_Click(object sender, EventArgs e)
         {
             ClearDisplay();
-            TR.ResetPoints(Shapes.getShape(currentShape), false);
+            TR.ResetPoints(Shapes.getShape(currentShape), false, currentSet, currentSeq, seqIndex);
             strokeNum = 0;
         }
 
