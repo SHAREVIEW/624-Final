@@ -12,13 +12,15 @@ namespace PointFileParser
         public int y;
         public uint time;
         public int pressure;
+        public int stroke;
 
-        public Point(string X, string Y, string t, string p)
+        public Point(string X, string Y, string t, string p, string s)
         {
             x = Int32.Parse(X);
             y = Int32.Parse(Y);
             time = UInt32.Parse(t);
             pressure = Int32.Parse(p);
+            stroke = Int32.Parse(s);
         }
     }
 
@@ -102,7 +104,7 @@ namespace PointFileParser
                         seq = Int32.Parse(parts[SEQ]);
                         shape = Int32.Parse(parts[SHAPE]);
                         maxStrokes = Int32.Parse(parts[STROKE]);
-                        points.Add(new Point(parts[X], parts[Y], parts[TIME], parts[PRESSURE]));
+                        points.Add(new Point(parts[X], parts[Y], parts[TIME], parts[PRESSURE], parts[STROKE]));
                     }
 
                     //calculate rubine features
@@ -140,7 +142,8 @@ namespace PointFileParser
                         {
                             if (points[i].x == points[i - 1].x && points[i].y == points[i - 1].y)
                                 continue;
-                            pathLen += PointDist(points[i], points[i - 1]);
+                            if(points[i].stroke == points[i-1].stroke)
+                                pathLen += PointDist(points[i], points[i - 1]);
                             int xDist = points[i].x - points[i - 1].x;
                             int yDist = points[i].y - points[i - 1].y;
                             if (i > 1)
