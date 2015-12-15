@@ -69,7 +69,7 @@ namespace PointFileParser
                 string outFile = String.Format("../../../../Logs/Subject/InterpretedLog-{0}.txt", fileNum);
                 using (System.IO.StreamWriter output = new System.IO.StreamWriter(outFile, false))
                 {
-                    output.WriteLine("Set,Seq,Shape,startCos,startSin,DiagLen,DiagAngle,EndDist,EndCos,EndSin,PathLen,TotalRotSum,AbsRotSum,RotSquaredSum,AvgSpeed,TotalTime");
+                    output.WriteLine("Set,Seq,Shape,startCos,startSin,DiagLen,DiagAngle,EndDist,EndCos,EndSin,PathLen,TotalRotSum,AbsRotSum,RotSquaredSum,AvgSpeed,TotalTime,AvgPressure,StrokeCount");
                 }
 
                 while (true)
@@ -93,6 +93,7 @@ namespace PointFileParser
                     int seq = 0;
                     int shape = 0;
 
+                    int maxStrokes = 0;
 
                     for (int i = 0; i < numPoints; i++)
                     {
@@ -100,6 +101,7 @@ namespace PointFileParser
                         set = Int32.Parse(parts[SET]);
                         seq = Int32.Parse(parts[SEQ]);
                         shape = Int32.Parse(parts[SHAPE]);
+                        maxStrokes = Int32.Parse(parts[STROKE]);
                         points.Add(new Point(parts[X], parts[Y], parts[TIME], parts[PRESSURE]));
                     }
 
@@ -125,12 +127,15 @@ namespace PointFileParser
                     double absRot = 0;
                     double rotSquared = 0;
 
+                    double pressure = 0;
+
                     for (int i = 0; i < points.Count; i++)
                     {
                         xMin = System.Math.Min(xMin, points[i].x);
                         yMin = System.Math.Min(yMin, points[i].y);
                         xMax = System.Math.Max(xMax, points[i].x);
                         yMax = System.Math.Max(yMax, points[i].y);
+                        pressure += points[i].pressure;
                         if (i > 0)
                         {
                             if (points[i].x == points[i - 1].x && points[i].y == points[i - 1].y)
@@ -151,6 +156,7 @@ namespace PointFileParser
                         }
                     }
 
+                    pressure /= points.Count;
 
                     double diagLen = Math.Sqrt((xMax - xMin) * (xMax - xMin) + (yMax - yMin) * (yMax - yMin));
                     double diagAngle = Math.Atan(((double)(yMax - yMin)) / (xMax - xMin));
@@ -162,11 +168,11 @@ namespace PointFileParser
                     double avgSpeed = pathLen / totalTime;
                     if (totalTime == 0)
                         avgSpeed = 0;
-                    Console.WriteLine("{0}:{1}:{2}:{16} :: {3},{4},{5},{6},{7},{8},{9},{10},{11},{12},{13},{14},{15}", set + 1, seq + 1, shape + 1, startCos, startSin, diagLen, diagAngle, endDist, endCos, endSin, pathLen, totalRot, absRot, rotSquared, avgSpeed, totalTime, shapeName);
+                    Console.WriteLine("{0}:{1}:{2}:{16} :: {3},{4},{5},{6},{7},{8},{9},{10},{11},{12},{13},{14},{15},{17},{18}", set + 1, seq + 1, shape + 1, startCos, startSin, diagLen, diagAngle, endDist, endCos, endSin, pathLen, totalRot, absRot, rotSquared, avgSpeed, totalTime, shapeName, pressure, maxStrokes);
 
                     using (System.IO.StreamWriter output = new System.IO.StreamWriter(outFile, true))
                     {
-                        output.WriteLine("{0},{1},{2},{16},{3},{4},{5},{6},{7},{8},{9},{10},{11},{12},{13},{14},{15}", set + 1, seq + 1, shape + 1, startCos, startSin, diagLen, diagAngle, endDist, endCos, endSin, pathLen, totalRot, absRot, rotSquared, avgSpeed, totalTime, shapeName);
+                        output.WriteLine("{0},{1},{2},{16},{3},{4},{5},{6},{7},{8},{9},{10},{11},{12},{13},{14},{15},{17},{18}", set + 1, seq + 1, shape + 1, startCos, startSin, diagLen, diagAngle, endDist, endCos, endSin, pathLen, totalRot, absRot, rotSquared, avgSpeed, totalTime, shapeName, pressure, maxStrokes);
                     }
                 }
             }
