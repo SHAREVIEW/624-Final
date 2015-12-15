@@ -11,14 +11,12 @@ namespace CalAvgGSRPerShape
     {
         public uint startTime;
         public uint endTime;
+        public int numGsrTimestamps = 0;
+        public double avgGsr = 0; 
     }
 
     class Program
-    {
-        public StreamReader pointDataReader;
-        public StreamReader bioDataReader;
-        
-
+    { 
 
         static void Main(string[] args)
         {
@@ -39,6 +37,14 @@ namespace CalAvgGSRPerShape
             if(!System.IO.File.Exists(pointFileName))
             {
                 Console.WriteLine("Error! File {0} does not exist!\nPress enter to exit.",pointFileName);
+                var dummy = Console.ReadLine();
+                return;
+            }
+
+
+            if (!System.IO.File.Exists(bioFileName))
+            {
+                Console.WriteLine("Error! File {0} does not exist!\nPress enter to exit.", bioFileName);
                 var dummy = Console.ReadLine();
                 return;
             }
@@ -78,6 +84,79 @@ namespace CalAvgGSRPerShape
                 }
             }
 
+            using (System.IO.StreamReader input = new System.IO.StreamReader(bioFileName, true))
+            {
+                input.ReadLine();
+                int shapeIndex = 0;
+                
+                while (true)
+                {
+                    string bioline = input.ReadLine();
+                    if (bioline == null)
+                        break;
+                    uint timestamp = UInt32.Parse(bioline.Split(',')[0]);
+                    //correct to utc time
+                    timestamp += 6 * 60 * 60;
+                    if (shapeIndex < shapes.Count)
+                    {
+                        Console.WriteLine("GSR Timestamp: {0} \t Shape {1} Start Time: {2} \t Shape {1} End Time: {3}", timestamp, shapeIndex, shapes[shapeIndex].startTime, shapes[shapeIndex].endTime);
+                    }
+                    else
+                    {
+                        Console.WriteLine("GSR Timestamp after last timestamp of shapes");
+                    }
+                    string gsrString = bioline.Split(',')[8];
+                    //Console.WriteLine(gsrString);
+                    double gsr = Double.Parse(gsrString);
+                    if (shapeIndex < shapes.Count)
+                    {
+                        if (timestamp < shapes[shapeIndex].startTime)
+                        {
+                            //this should only come up once - before the first shape is drawn
+                            //find baseline?
+                        }
+                        else if (timestamp >= shapes[shapeIndex].startTime && timestamp <= shapes[shapeIndex].endTime)
+                        {
+                            //timestamp of gsr reading takes place during the shape we are watching
+                            shapes[shapeIndex].avgGsr += gsr;
+                            shapes[shapeIndex].numGsrTimestamps++;
+
+                        }
+                        else if (timestamp > shapes[shapeIndex].endTime)
+                        {
+                            //calculate the average of the gsr values for the current shape
+                            if (shapes[shapeIndex].numGsrTimestamps > 0)
+                            {
+                                if (shapes[shapeIndex].numGsrTimestamps > 0)
+                                {
+                                    shapes[shapeIndex].avgGsr = shapes[shapeIndex].avgGsr / shapes[shapeIndex].numGsrTimestamps;
+                                }
+                                else
+                                {
+                                    shapes[shapeIndex].avgGsr = Double.MinValue;
+                                }
+                                Console.WriteLine("Avg gsr for shape {0} = {1}", shapeIndex, shapes[shapeIndex].avgGsr);
+                            }
+                            shapeIndex++;
+                            //increment through shape indices until we find one the gsr timestamp belongs to
+                            while (shapeIndex < shapes.Count && timestamp > shapes[shapeIndex].endTime)
+                            {
+
+                                if (timestamp <= shapes[shapeIndex].endTime)
+                                {
+                                    shapes[shapeIndex].avgGsr += gsr;
+                                    shapes[shapeIndex].numGsrTimestamps++;
+                                }
+                                shapeIndex++;
+                            }
+                        }
+                    }
+                }
+            }
+            for(int i = 0; i < shapes.Count; i++)
+            {
+                Console.WriteLine("Avg gsr in shape {0} = {1}", i, shapes[i].avgGsr);
+            }
 
             foreach (KeyValuePair<string, int> kvp in shapeCounts)
             {
