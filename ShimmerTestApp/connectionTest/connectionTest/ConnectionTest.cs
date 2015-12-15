@@ -478,7 +478,7 @@ namespace connectionTest
                 //Console.WriteLine("actually writing to file");
                 output.WriteLine("Timestamp_Unix, Timestamp_Hour, Timestamp_Minute, Timestamp_Second, Timestamp_Millisecond, Current_Internal_ADC_A13_Raw, Current_Internal_ADC_A13_Cal, Current_GSR_Raw, Current_GSR_Calculated");
                 //Console.WriteLine("we wrote");
-            }
+            }j
         }
 
         public void writeLogFile(DateTime rightNow)
