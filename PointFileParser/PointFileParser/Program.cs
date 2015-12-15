@@ -77,12 +77,13 @@ namespace PointFileParser
                     string shapeLine = input.ReadLine();
                     if (shapeLine == null)
                         break;
+                    string shapeName = shapeLine.Split(' ')[2];
                     string success = input.ReadLine();
                     int numPoints = Int32.Parse(input.ReadLine());
 
                     if (numPoints < 10)
                     {
-                        Console.WriteLine("Warning! A {0} Shape has less than 10 points (has {1}). Discarding shape.", shapeLine.Split()[2], numPoints);
+                        Console.WriteLine("Warning! A {0} Shape has less than 10 points (has {1}). Discarding shape.", shapeName, numPoints);
                         continue;
                     }
 
@@ -161,11 +162,11 @@ namespace PointFileParser
                     double avgSpeed = pathLen / totalTime;
                     if (totalTime == 0)
                         avgSpeed = 0;
-                    Console.WriteLine("{0}:{1}:{2} :: {3},{4},{5},{6},{7},{8},{9},{10},{11},{12},{13},{14},{15}", set + 1, seq + 1, shape + 1, startCos, startSin, diagLen, diagAngle, endDist, endCos, endSin, pathLen, totalRot, absRot, rotSquared, avgSpeed, totalTime);
+                    Console.WriteLine("{0}:{1}:{2}:{16} :: {3},{4},{5},{6},{7},{8},{9},{10},{11},{12},{13},{14},{15}", set + 1, seq + 1, shape + 1, startCos, startSin, diagLen, diagAngle, endDist, endCos, endSin, pathLen, totalRot, absRot, rotSquared, avgSpeed, totalTime, shapeName);
 
                     using (System.IO.StreamWriter output = new System.IO.StreamWriter(outFile, true))
                     {
-                        output.WriteLine("{0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11},{12},{13},{14},{15}", set + 1, seq + 1, shape + 1, startCos, startSin, diagLen, diagAngle, endDist, endCos, endSin, pathLen, totalRot, absRot, rotSquared, avgSpeed, totalTime);
+                        output.WriteLine("{0},{1},{2},{16},{3},{4},{5},{6},{7},{8},{9},{10},{11},{12},{13},{14},{15}", set + 1, seq + 1, shape + 1, startCos, startSin, diagLen, diagAngle, endDist, endCos, endSin, pathLen, totalRot, absRot, rotSquared, avgSpeed, totalTime, shapeName);
                     }
                 }
             }
