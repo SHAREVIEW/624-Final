@@ -71,7 +71,7 @@ namespace PointFileParser
                 string outFile = String.Format("../../../../Logs/Subject/InterpretedLog-{0}.txt", fileNum);
                 using (System.IO.StreamWriter output = new System.IO.StreamWriter(outFile, false))
                 {
-                    output.WriteLine("Set,Seq,Shape,startCos,startSin,DiagLen,DiagAngle,EndDist,EndCos,EndSin,PathLen,TotalRotSum,AbsRotSum,RotSquaredSum,AvgSpeed,TotalTime,AvgPressure,StrokeCount");
+                    output.WriteLine("Set,Seq,Shape,Shape name,startCos,startSin,DiagLen,DiagAngle,EndDist,EndCos,EndSin,PathLen,TotalRotSum,AbsRotSum,RotSquaredSum,AvgSpeed,TotalTime,AvgPressure,StrokeCount");
                 }
 
                 while (true)
@@ -86,6 +86,8 @@ namespace PointFileParser
                     if (numPoints < 10)
                     {
                         Console.WriteLine("Warning! A {0} Shape has less than 10 points (has {1}). Discarding shape.", shapeName, numPoints);
+                        for (int i = 0; i < numPoints; i++)
+                            input.ReadLine();
                         continue;
                     }
 
