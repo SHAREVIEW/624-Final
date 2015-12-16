@@ -71,7 +71,11 @@ namespace PointFileParser
                 string outFile = String.Format("../../../../Logs/Subject/InterpretedLog-{0}.txt", fileNum);
                 using (System.IO.StreamWriter output = new System.IO.StreamWriter(outFile, false))
                 {
-                    output.WriteLine("Set,Seq,Shape,startCos,startSin,DiagLen,DiagAngle,EndDist,EndCos,EndSin,PathLen,TotalRotSum,AbsRotSum,RotSquaredSum,AvgSpeed,TotalTime,AvgPressure,StrokeCount");
+<<<<<<< HEAD
+                    output.WriteLine("Set,Seq,Shape,ShapeName,startCos,startSin,DiagLen,DiagAngle,EndDist,EndCos,EndSin,PathLen,TotalRotSum,AbsRotSum,RotSquaredSum,AvgSpeed,TotalTime,AvgPressure,StrokeCount");
+=======
+                    output.WriteLine("Set,Seq,Shape,Shape name,startCos,startSin,DiagLen,DiagAngle,EndDist,EndCos,EndSin,PathLen,TotalRotSum,AbsRotSum,RotSquaredSum,AvgSpeed,TotalTime,AvgPressure,StrokeCount");
+>>>>>>> origin/master
                 }
 
                 while (true)
@@ -79,6 +83,7 @@ namespace PointFileParser
                     string shapeLine = input.ReadLine();
                     if (shapeLine == null)
                         break;
+                    Console.WriteLine(shapeLine);
                     string shapeName = shapeLine.Split(' ')[2];
                     string success = input.ReadLine();
                     int numPoints = Int32.Parse(input.ReadLine());
@@ -86,6 +91,20 @@ namespace PointFileParser
                     if (numPoints < 10)
                     {
                         Console.WriteLine("Warning! A {0} Shape has less than 10 points (has {1}). Discarding shape.", shapeName, numPoints);
+<<<<<<< HEAD
+                        using (System.IO.StreamWriter output = new System.IO.StreamWriter(outFile, true))
+                        {
+                            output.WriteLine("{0},{1},{2},{16},{3},{4},{5},{6},{7},{8},{9},{10},{11},{12},{13},{14},{15},{17},{18}", -1, -1, -1, double.MinValue, double.MinValue, double.MinValue, double.MinValue, double.MinValue, double.MinValue, double.MinValue, double.MinValue, double.MinValue, double.MinValue, double.MinValue, double.MinValue, UInt32.MinValue, shapeName, double.MinValue, -1);
+                        }
+                        
+                        for (int i = 0; i < numPoints; i++)
+                        {
+                            input.ReadLine();
+                        }
+=======
+                        for (int i = 0; i < numPoints; i++)
+                            input.ReadLine();
+>>>>>>> origin/master
                         continue;
                     }
 
@@ -152,6 +171,10 @@ namespace PointFileParser
                                 int lastX = points[i - 1].x - points[i - 2].x;
 
                                 double rot = Math.Atan((xDist * lastY - yDist * lastX) / (double)(xDist * lastX + yDist * lastY));
+                                if(rot == Double.NaN)
+                                {
+                                    continue;
+                                }
                                 totalRot += rot;
                                 absRot += Math.Abs(rot);
                                 rotSquared += rot * rot;

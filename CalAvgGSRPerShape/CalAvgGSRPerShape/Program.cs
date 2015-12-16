@@ -84,6 +84,10 @@ namespace CalAvgGSRPerShape
                 }
             }
 
+            int numPreGsrTimestamps = 0;
+            double avgPreGsr = 0;
+            bool preShapes = true;
+            
             using (System.IO.StreamReader input = new System.IO.StreamReader(bioFileName, true))
             {
                 input.ReadLine();
@@ -114,9 +118,23 @@ namespace CalAvgGSRPerShape
                         {
                             //this should only come up once - before the first shape is drawn
                             //find baseline?
+                            avgPreGsr += gsr;
+                            numPreGsrTimestamps++;
                         }
                         else if (timestamp >= shapes[shapeIndex].startTime && timestamp <= shapes[shapeIndex].endTime)
                         {
+                            if (preShapes)
+                            {
+                                preShapes = false;
+                                if (numPreGsrTimestamps > 0)
+                                {
+                                    avgPreGsr = avgPreGsr / numPreGsrTimestamps;
+                                }
+                                else
+                                {
+                                    avgPreGsr = Double.MinValue;
+                                }
+                            }
                             //timestamp of gsr reading takes place during the shape we are watching
                             shapes[shapeIndex].avgGsr += gsr;
                             shapes[shapeIndex].numGsrTimestamps++;
@@ -156,6 +174,15 @@ namespace CalAvgGSRPerShape
             for(int i = 0; i < shapes.Count; i++)
             {
                 Console.WriteLine("Avg gsr in shape {0} = {1}", i, shapes[i].avgGsr);
+            }
+
+            using (System.IO.StreamWriter output = new System.IO.StreamWriter("../../../../Logs/Subject/avgerage-GSR-per-Shape-11.csv", true))
+            {
+                output.WriteLine("Average Gsr Per Shape, Average Gsr Before Shapes");
+                foreach (ShapeTime s in shapes)
+                {
+                    output.WriteLine("{0},{1}", s.avgGsr, avgPreGsr);
+                }
             }
 
             foreach (KeyValuePair<string, int> kvp in shapeCounts)
