@@ -162,7 +162,7 @@ namespace PointFileParser
                                 int lastX = points[i - 1].x - points[i - 2].x;
 
                                 double rot = Math.Atan((xDist * lastY - yDist * lastX) / (double)(xDist * lastX + yDist * lastY));
-                                if(rot == Double.NaN)
+                                if(Double.IsNaN(rot))
                                 {
                                     continue;
                                 }
