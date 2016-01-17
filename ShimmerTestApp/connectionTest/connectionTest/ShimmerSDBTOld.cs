@@ -187,7 +187,7 @@ namespace ShimmerAPI
         private string shimmername = null;
         private string SdDir = "";
         private string experimentid = null;
-        private long configtime = 0;
+        private int configtime = 0;
         public byte[] storedConfig = new byte[118];
 
         // btsd changes
@@ -285,8 +285,8 @@ namespace ShimmerAPI
         public override string GetSdDir() { return SdDir; }
         public override void SetExperimentID(string val) { experimentid = val; }
         public override string GetExperimentID() { return experimentid; }
-        public override void SetConfigTime(long val) { configtime = val; }
-        public override long GetConfigTime() { return configtime; }
+        public override void SetConfigTime(int val) { configtime = val; }
+        public override int GetConfigTime() { return configtime; }
 
         public override string SystemTime2Config()
         {
@@ -303,12 +303,12 @@ namespace ShimmerAPI
             return Convert.ToString(lTotalSecondsElapsed);
         }
 
-        public override string ConfigTimeToShowString(long cfgtime_in)
+        public override string ConfigTimeToShowString(int cfgtime_in)
         {
             string configtime_text = null;
             if (cfgtime_in > 0)
             {
-                int dif_secs = (int)(cfgtime_in % 60);
+                int dif_secs = cfgtime_in % 60;
                 int dif_mins = ((int)(cfgtime_in / 60)) % 60;
                 int dif_hours = ((int)(cfgtime_in / (60 * 60))) % 24;
                 int dif_days = (int)(cfgtime_in / (24 * 60 * 60));
@@ -380,10 +380,13 @@ namespace ShimmerAPI
             KeepObjectCluster = null;
             if (IsConnectionOpen())
             {
+                Console.WriteLine("Connection open");
                 if (ShimmerState == SHIMMER_STATE_CONNECTED)
                 {
+                    Console.WriteLine("ShimmerState = Shimmer_state_connected");
                     if (IsFilled)
                     {
+                        Console.WriteLine("Is Filled");
                         StreamingACKReceived = false;
                         LastReceivedTimeStamp = 0;
                         CurrentTimeStampCycle = 0;
@@ -395,6 +398,7 @@ namespace ShimmerAPI
                         OrientationAlgo = null;
                         if (GetFirmwareIdentifier() == 3)
                         {
+                            Console.WriteLine("Firmware Identifier = 3");
                             WriteBytes(new byte[1] { (byte)ShimmerSDBT.PacketTypeShimmer3SDBT.GET_STATUS_COMMAND }, 0, 1);
                             System.Threading.Thread.Sleep(500);
                         }
@@ -452,6 +456,7 @@ namespace ShimmerAPI
                     else
                     {
                         String message = "Failed to read configuration information from shimmer. Please ensure correct shimmer is connected";
+                        Console.WriteLine(message);
                         CustomEventArgs newEventArgs = new CustomEventArgs((int)ShimmerIdentifier.MSG_IDENTIFIER_NOTIFICATION_MESSAGE, (object)message, (int)ShimmerSDBT.ShimmerSDBTMinorIdentifier.MSG_WARNING);
                         OnNewEvent(newEventArgs);
                     }
@@ -524,12 +529,6 @@ namespace ShimmerAPI
             readInfoMem(); 
             
             ReadPressureCalibrationCoefficients();
-
-            //write the RWC
-            if (!isLogging)
-            {
-                writeRealWorldClock();
-            }
 
             if (CurrentSensingStatus)
             {
@@ -704,21 +703,6 @@ namespace ShimmerAPI
             System.Threading.Thread.Sleep(200);
         }
 
-        public override void writeRealWorldClock()
-        {
-            //if (HardwareVersion == (int)ShimmerVersion.SHIMMER3 && ((FirmwareIdentifier == FW_IDENTIFIER_LOGANDSTREAM && CompatibilityCode > 6)))
-            //{
-
-            if (!isLogging)
-            {
-                //Just fill empty bytes here for RWC, set them just before writing to Shimmer
-                byte[] array = ConvertSystemTimeToShimmerRwcDataBytes();
-                WriteBytes(new byte[9] { (byte)PacketTypeShimmer3SDBT.SET_RWC_COMMAND, array[0], array[1], array[2], array[3], array[4], array[5], array[6], array[7] }, 0, 9);
-                System.Threading.Thread.Sleep(200);
-            }
-            //}
-        }
-
         public override void WriteCenter()
         {
             byte[] center_byte = System.Text.Encoding.Default.GetBytes(GetCenter());
@@ -796,24 +780,6 @@ namespace ShimmerAPI
                 }
             }
         }
-
-
-        protected byte[] ConvertSystemTimeToShimmerRwcDataBytes()
-        {
-            long milliseconds = (long)DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)).TotalMilliseconds;
-            long milisecondTicks = (long)(((double)milliseconds) * 32.768); // Convert miliseconds to clock ticks
-            ShimmerRealWorldClock = milisecondTicks;
-
-            byte[] rwcTimeArray = BitConverter.GetBytes(milisecondTicks);
-            //must be little endian, so reverse the array in case it is not
-            if (!BitConverter.IsLittleEndian)
-            {
-                Array.Reverse(rwcTimeArray);
-            }
-
-            return rwcTimeArray;
-        }
-
 
 
 
@@ -1513,22 +1479,12 @@ namespace ShimmerAPI
                         System.Console.WriteLine("In Stream CMD Response");
                         if (inStreamCMD == (byte)ShimmerSDBT.PacketTypeShimmer3SDBT.STATUS_RESPONSE)
                         {
-                            //STATUS: 0|0|0|STREAMING|LOGGING|SELFCMD|SENSING|DOCKED
+                            //STATUS: 0|0|0|0|0|SELFCMD|SENSING|DOCKED
                             int bufferint = ReadByte();
                             bool docked = (bufferint & 0x01) == 1;
                             bool sensing = ((bufferint >> 1) & 0x01) == 1;
                             bool selfcmd = ((bufferint >> 2) & 0x01) == 1;
-                            bool logging = ((bufferint >> 3) & 0x01) == 1;
-                            bool streaming = ((bufferint >> 4) & 0x01) == 1;
                             System.Console.WriteLine("CMD Response; " + "Docked:" + docked + ",Sensing:" + sensing);
-
-                            //AS is this ok?
-                            isLogging = logging;
-                            if (streaming)
-                            {
-                                SetState(ShimmerBluetooth.SHIMMER_STATE_STREAMING);
-                            }
-
                             if (CurrentDockStatus != docked)
                             {
                                 CurrentDockStatus = docked;
@@ -1710,7 +1666,7 @@ namespace ShimmerAPI
                             try
                             {
                                 System.Console.WriteLine("Config Time: " + System.Text.Encoding.Default.GetString(buffer.ToArray()));
-                                SetConfigTime(Convert.ToInt64(System.Text.Encoding.Default.GetString(buffer.ToArray())));
+                                SetConfigTime(Convert.ToInt32(System.Text.Encoding.Default.GetString(buffer.ToArray())));
                             }
                             catch (FormatException)
                             {
@@ -1737,8 +1693,6 @@ namespace ShimmerAPI
                             bool docked = (bufferint & 0x01) == 1;
                             bool sensing = ((bufferint >> 1) & 0x01) == 1;
                             bool selfcmd = ((bufferint >> 2) & 0x01) == 1;
-                            bool logging = ((bufferint >> 3) & 0x01) == 1;
-                            bool streaming = ((bufferint >> 4) & 0x01) == 1;
                             System.Console.WriteLine("CMD Response; " + "Docked:" + docked+ ",Sensing:" + sensing);
                             if (CurrentDockStatus != docked)
                             {

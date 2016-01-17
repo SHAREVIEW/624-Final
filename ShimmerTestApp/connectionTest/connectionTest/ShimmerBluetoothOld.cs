@@ -138,9 +138,7 @@ namespace ShimmerAPI
         protected int BaudRate;
         protected byte[] ExpansionDetectArray;//Expansion board detect for Shimmer3
         protected string ExpansionBoard;
-
-        protected int TimeStampPacketByteSize = 2;
-        protected int TimeStampPacketRawMaxValue = 65536;// 16777216 or 65536 
+        
 
         List<double> HRMovingAVGWindow = new List<double>(4);
         String[] SignalNameArray = new String[MAX_NUMBER_OF_SIGNALS];
@@ -217,11 +215,6 @@ namespace ShimmerAPI
         protected List<double> GyroZRawList = new List<double>();
 
         protected GradDes3DOrientation OrientationAlgo;
-        
-        protected int BufferSyncSizeInSeconds = 15;
-        private static readonly DateTime UnixEpoch = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
-
-        protected long ShimmerRealWorldClock = 0;
 
         public enum ShimmerVersion
         {
@@ -380,9 +373,6 @@ namespace ShimmerAPI
             GET_BAUD_RATE_COMMAND = 0X6C,
             DETECT_EXPANSION_BOARD_RESPONSE = 0X65,
             GET_EXPANSION_BOARD_COMMAND = 0x66,
-            SET_VBATT_FREQ_COMMAND = 0x98,
-            VBATT_FREQ_RESPONSE = 0x99,
-            GET_VBATT_FREQ_COMMAND = 0x9A,
             ACK_PROCESSED = 0xFF
         };
 
@@ -416,10 +406,7 @@ namespace ShimmerAPI
             GET_CONFIGTIME_COMMAND = 0x87,
             DIR_RESPONSE = 0x88,
             GET_DIR_COMMAND = 0x89,
-            INSTREAM_CMD_RESPONSE = 0x8A,
-            SET_RWC_COMMAND = 0x8F,
-            RWC_RESPONSE = 0x90,
-            GET_RWC_COMMAND = 0x91
+            INSTREAM_CMD_RESPONSE = 0x8A
         };
 
         public enum ConfigSetupByte0Bitmap : byte
@@ -577,7 +564,7 @@ namespace ShimmerAPI
         protected abstract int ReadByte();
         
         
-        protected void Connect()
+        public void Connect()
         {
             if (!IsConnectionOpen())
             {
@@ -627,12 +614,11 @@ namespace ShimmerAPI
                         {
                             if (GetFirmwareIdentifier() == FW_IDENTIFIER_LOGANDSTREAM)
                             {
-                                WriteBatteryFrequency(0);
+
                                 InitializeShimmer3SDBT();
                             }
                             else if (GetFirmwareIdentifier() == FW_IDENTIFIER_BTSTREAM)
                             {
-                                WriteBatteryFrequency(0);
                                 InitializeShimmer3();
                             }
                         }
@@ -673,7 +659,7 @@ namespace ShimmerAPI
             InitializeShimmer3();
         }
 
-        public virtual void SetConfigTime(long value){
+        public virtual void SetConfigTime(int value){
 
         }
 
@@ -775,7 +761,7 @@ namespace ShimmerAPI
         public virtual string GetSdDir() { return ""; }
         public virtual void SetExperimentID(string val) {}
         public virtual string GetExperimentID() { return ""; }
-        public virtual long GetConfigTime() { return -1; }
+        public virtual int GetConfigTime() { return -1; }
         public virtual void WriteCenter() { }
         public virtual void WriteShimmerName() { }
         public virtual void WriteTrial(){    }
@@ -785,7 +771,7 @@ namespace ShimmerAPI
 
         public virtual void SetInterval(int val) { }
 
-        public virtual string ConfigTimeToShowString(long cfgtime_in) { return ""; }
+        public virtual string ConfigTimeToShowString(int cfgtime_in) { return ""; }
 
         public virtual void WriteNshimmer()
         {
@@ -914,7 +900,7 @@ namespace ShimmerAPI
                                 }
                                 break;
                             default:
-                                System.Console.WriteLine("Misaligned ByteStream Detected");
+                                //System.Console.WriteLine("Misaligned ByteStream Detected");
                                 // If it gets here means the previous packet is invalid so make it null so it wont be added to the buffer
                                 KeepObjectCluster = null;
                                 break;
@@ -984,7 +970,6 @@ namespace ShimmerAPI
                                     ADCRawSamplingRateValue = ReadByte();
                                     SamplingRate = (double)1024 / ADCRawSamplingRateValue;
                                 }
-
                                 break;
                             case (byte)PacketTypeShimmer2.ACCEL_RANGE_RESPONSE:
                                 SetAccelRange(ReadByte());
@@ -1190,7 +1175,6 @@ namespace ShimmerAPI
                                 string temp = fw_id + FirmwareVersion.ToString("0.0") + "." + FirmwareInternal.ToString();
                                 FirmwareVersionFullName = temp;
                                 SetCompatibilityCode();
-                                UpdateBasedOnCompatibilityCode();
                                 break;
                             case (byte)PacketTypeShimmer2.GET_SHIMMER_VERSION_RESPONSE:
                                 bufferbyte = new byte[1];
@@ -1198,7 +1182,6 @@ namespace ShimmerAPI
                                 HardwareVersion = bufferbyte[0];
                                 // set default calibration parameters
                                 SetCompatibilityCode();
-                                UpdateBasedOnCompatibilityCode();
                                 break;
                             case (byte)PacketTypeShimmer3.EXG_REGS_RESPONSE:
                                 System.Console.WriteLine("EXG r r" + ChipID);
@@ -1232,7 +1215,6 @@ namespace ShimmerAPI
                                 }
 
                                 break;
-                            
                             default:
                                 // This is to extend log and stream functionality
                                 if (GetFirmwareIdentifier() == FW_IDENTIFIER_LOGANDSTREAM)
@@ -1463,7 +1445,6 @@ namespace ShimmerAPI
                 SetLowPowerMag(LowPowerMagEnabled);
                 SetLowPowerGyro(LowPowerGyroEnabled);
             }
-          
             ReadAccelRange();
             ReadSamplingRate();
             ReadMagRange();
@@ -1846,11 +1827,6 @@ namespace ShimmerAPI
             signalNameArray[0] = "TimeStamp";
             signalDataTypeArray[0] = "u16";
             int packetSize = 2; // Time stamp
-            if (CompatibilityCode >= 6)
-            {
-                signalDataTypeArray[0] = "u24";
-                packetSize = TimeStampPacketByteSize; // Time stamp
-            }
             int enabledSensors = 0x00;
             for (int i = 0; i < nC; i++)
             {
@@ -2376,10 +2352,7 @@ namespace ShimmerAPI
             int iTimeStamp = getSignalIndex("TimeStamp"); //find index
             objectCluster.RawTimeStamp = (int)newPacket[iTimeStamp];
             objectCluster.Add("Timestamp", "RAW", "no units", newPacket[iTimeStamp]);
-            double calibratedTS = CalibrateTimeStamp(newPacket[iTimeStamp]);
-            objectCluster.Add("Timestamp", "CAL", "mSecs", calibratedTS);
-            double time = (DateTime.UtcNow - UnixEpoch).TotalMilliseconds;
-
+            objectCluster.Add("Timestamp", "CAL", "mSecs", CalibrateTimeStamp(newPacket[iTimeStamp]));
 
             double[] accelerometer = new double[3];
             double[] gyroscope = new double[3];
@@ -3201,14 +3174,6 @@ namespace ShimmerAPI
                     formattedData[i] = Calculatetwoscomplement((int)((int)(data[iData + 1] & 0xFF) + ((int)(data[iData] & 0xFF) << 8)), 16);
                     //formattedData[i]=ByteBuffer.wrap(arrayb).order(ByteOrder.LITTLE_ENDIAN).getShort();
                     iData = iData + 2;
-                }
-                else if (dataType[i] == "u24")
-                {
-                    long xmsb = ((long)(data[iData + 2] & 0xFF) << 16);
-                    long msb = ((long)(data[iData + 1] & 0xFF) << 8);
-                    long lsb = ((long)(data[iData + 0] & 0xFF));
-                    formattedData[i] = xmsb + msb + lsb;
-                    iData = iData + 3;
                 }
                 else if (dataType[i] == "u24r")
                 {
@@ -4157,20 +4122,6 @@ namespace ShimmerAPI
             return CompatibilityCode;
         }
 
-        protected void UpdateBasedOnCompatibilityCode()
-        {
-            if (CompatibilityCode < 6)
-            {
-                TimeStampPacketByteSize = 2;
-                TimeStampPacketRawMaxValue = 65536;// 16777216 or 65536 
-            }
-            else if (CompatibilityCode >= 6)
-            {
-                TimeStampPacketByteSize = 3;
-                TimeStampPacketRawMaxValue = 16777216;// 16777216 or 65536 
-            }
-        }
-
         protected void SetCompatibilityCode()
         {
             CompatibilityCode = 0;
@@ -4194,13 +4145,9 @@ namespace ShimmerAPI
                     {
                         CompatibilityCode = 4;
                     }
-                    else if (FirmwareVersion >= 0.5 && (FirmwareVersion <= 0.7 && FirmwareInternal <= 2))
+                    else if (FirmwareVersion >= 0.5)
                     {
                         CompatibilityCode = 5;
-                    }
-                    else if (FirmwareVersion >= 0.7 && FirmwareInternal>2)
-                    {
-                        CompatibilityCode = 7; //skip CompatibilityCode = 6 since functionality of code 6 and 7 was introduced at the same time 
                     }
                 }
                 else if (FirmwareIdentifier == 3)   //LogAndStream
@@ -4213,17 +4160,9 @@ namespace ShimmerAPI
                     {
                         CompatibilityCode = 4;
                     }
-                    else if (FirmwareVersion >= 0.3 && FirmwareVersion<0.5)
+                    else if (FirmwareVersion >= 0.3)
                     {
                         CompatibilityCode = 5;
-                    }
-                    else if (FirmwareVersion >= 0.5 && FirmwareInternal >= 4  || FirmwareVersion == 0.6)
-                    {
-                        CompatibilityCode = 6;
-                    }
-                    else
-                    {
-                        CompatibilityCode = 6;
                     }
                 }
             }
@@ -4241,15 +4180,6 @@ namespace ShimmerAPI
 
         public void SetState(int state)
         {
-            if (ShimmerState == SHIMMER_STATE_CONNECTED) {
-                
-            }
-
-            Boolean stateChanging=false;
-            if (ShimmerState!=state){
-                stateChanging=true;
-            }
-
             ShimmerState = state;
             /*EventHandler handler = UICallback;
             if (handler != null)
@@ -4258,11 +4188,8 @@ namespace ShimmerAPI
                 handler(this, newEventArgs);
             }
              */
-            if (stateChanging)
-            {
-                CustomEventArgs newEventArgs = new CustomEventArgs((int)ShimmerIdentifier.MSG_IDENTIFIER_STATE_CHANGE, (object)state);
-                OnNewEvent(newEventArgs);
-            }
+            CustomEventArgs newEventArgs = new CustomEventArgs((int)ShimmerIdentifier.MSG_IDENTIFIER_STATE_CHANGE, (object)state);
+            OnNewEvent(newEventArgs);
         }
 
         public int GetState()
@@ -4780,25 +4707,6 @@ namespace ShimmerAPI
         }
 
         /// <summary>
-        /// This is used to set the battery frequency on the Shimmer3. It takes a 4 byte argument (little endian), that tells the shimmer to sample the battery after that many data packets
-        /// Battery frequency change only supported in BtStream v0.8.0 or later and LogAndStream v0.7.0 or later but it is not still handled by the API so we set it to 0
-        /// </summary>
-        /// <param name="freq">Frequency</param>
-        public void WriteBatteryFrequency(int freq)
-        {
-            if (HardwareVersion == (int)ShimmerVersion.SHIMMER3 && ((FirmwareIdentifier == FW_IDENTIFIER_LOGANDSTREAM && CompatibilityCode > 6) || (FirmwareIdentifier == FW_IDENTIFIER_BTSTREAM && CompatibilityCode >= 7)))
-            {
-                WriteBytes(new byte[5] { (byte)PacketTypeShimmer3.SET_VBATT_FREQ_COMMAND, (byte)0x00, (byte)0x00, (byte)0x00, (byte)0x00 }, 0, 5);
-                System.Threading.Thread.Sleep(200);
-            }
-        }
-
-        /// <summary>
-        /// This is used to get pc time and writes the 8 byte value to shimmer device. 
-        /// </summary>
-        public virtual void writeRealWorldClock() { }
-
-        /// <summary>
         /// This is used to set the Magnetometer (Shimmer2R and Shimmer3) to low power mode, where the internal sampling rate of the Magnetometer chip is reduced to 10 Hz for Shimmer2r and 15Hz for Shimmer3
         /// </summary>
         /// <param name="enable">Set to true to enable</param>
@@ -5210,12 +5118,10 @@ namespace ShimmerAPI
                 if (timeDifference > adjustedETD)
                 {
                     //calculate the estimated packet loss within that time period
-                    int numberOfLostPackets = ((int)Math.Ceiling(timeDifference / expectedTimeDifference))-1;
+                    int numberOfLostPackets = (int)Math.Ceiling(timeDifference / adjustedETD);
                     PacketLossCount = PacketLossCount + numberOfLostPackets;
                     //PacketLossCount = PacketLossCount + 1;
                     long mTotalNumberofPackets = (long)((calibratedTimeStamp - CalTimeStart) / (1 / (clockConstant / ADCRawSamplingRateValue) * 1000));
-                    mTotalNumberofPackets = (long)((calibratedTimeStamp - CalTimeStart) / expectedTimeDifference);
-                  
                     PacketReceptionRate = (double)((mTotalNumberofPackets - PacketLossCount) / (double)mTotalNumberofPackets) * 100;
 
                     if (PacketReceptionRate < 99)
