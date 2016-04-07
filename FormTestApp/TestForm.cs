@@ -867,7 +867,7 @@ namespace FormTestApp
                                     compareTimer.Stop();
                                 }
 
-                                uint unixTimestamp = (uint)(DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1))).TotalSeconds;
+                                uint unixTimestamp = (uint)(DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1))).TotalMilliseconds;
 
                                 if (m_pkTime - m_pkTimeLast > 50)
                                 {

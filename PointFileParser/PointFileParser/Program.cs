@@ -191,6 +191,7 @@ namespace PointFileParser
                     {
                         output.WriteLine("{0},{1},{2},{16},{3},{4},{5},{6},{7},{8},{9},{10},{11},{12},{13},{14},{15},{17},{18}", set + 1, seq + 1, shape + 1, startCos, startSin, diagLen, diagAngle, endDist, endCos, endSin, pathLen, totalRot, absRot, rotSquared, avgSpeed, totalTime, shapeName, pressure, maxStrokes);
                     }
+                    Console.WriteLine("TOTAL TIME IS {0}-{1}={2}", points[numPoints-1].time,points[0].time,totalTime);
                 }
             }
 
