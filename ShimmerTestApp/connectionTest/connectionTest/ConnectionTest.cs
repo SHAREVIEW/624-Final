@@ -95,6 +95,9 @@ namespace connectionTest
             //sw.StartNew();
         }
 
+        /// <summary>
+        /// Populate list of ComPorts
+        /// </summary>
         public void populateComPorts()
         {
             ComPort = comboBoxComPorts.Text;
@@ -108,6 +111,10 @@ namespace connectionTest
             comboBoxComPorts.AutoCompleteSource = AutoCompleteSource.ListItems;
         }
 
+
+        /// <summary>
+        /// Function to connect device using wforms interface.
+        /// </summary>
         public void Connect()
         {
             //for Shimmer and ShimmerSDBT
@@ -126,6 +133,11 @@ namespace connectionTest
 
         }
 
+        /// <summary>
+        /// Cycle a connect and a disconnect the first time user connects to device (may be deprecated)
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         public void firstTimeCycleConnect(Object sender, EventArgs e)
         {
             firstTimeTimer.Stop();
@@ -152,6 +164,14 @@ namespace connectionTest
             labelConnectionState.Text = text;
         }
 
+
+        /// <summary>
+        /// Blanket event handler for packets. Covers a number of events from Shimmer device.
+        /// Includes code for marking connection status, notifications, and data packets. 
+        /// TODO: rework code to make cleaner.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="args"></param>
         public void HandleEvent(object sender, EventArgs args)
         {
             CustomEventArgs eventArgs = (CustomEventArgs)args;
@@ -229,6 +249,7 @@ namespace connectionTest
                     //Console.WriteLine();
                     break;
                 case (int)Shimmer.ShimmerIdentifier.MSG_IDENTIFIER_NOTIFICATION_MESSAGE:
+                    //rework this as function?
                     string message = (string)eventArgs.getObject();
                     System.Diagnostics.Debug.Write(((Shimmer)sender).GetDeviceName() + message + System.Environment.NewLine);
                     //Message BOX
@@ -277,6 +298,10 @@ namespace connectionTest
             currentGSRLabel.Text = text;
         }
 
+        /// <summary>
+        /// Disconnect device from system.
+        /// TODO: figure out why it's crashing on closing connection. Might be part of the "StopStreaming" function
+        /// </summary>
         public void Disconnect()
         {
             if (ShimmerDevice != null)
@@ -323,6 +348,10 @@ namespace connectionTest
             //ShimmerDevice.StartStreaming();
         }
 
+
+        /// <summary>
+        /// Stop device streaming
+        /// </summary>
         private void stopStream()
         {
             ShimmerDevice.StopStreaming();
@@ -332,6 +361,11 @@ namespace connectionTest
             }
         }
 
+        /// <summary>
+        /// Click function for stop button, calls stopStream()
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void stopButton_Click(object sender, EventArgs e)
         {
             stopStream();
@@ -431,6 +465,10 @@ namespace connectionTest
             return (storedClusterData.Count > 0);
         }
 
+
+        /// <summary>
+        /// Deprecated. Needs deleting.
+        /// </summary>
         private void handleLogging()
         {
             Console.WriteLine("Writing stored data to file");
@@ -439,6 +477,11 @@ namespace connectionTest
             storedClusterData.Clear();
         }
 
+
+        /// <summary>
+        /// Writes a current biometricCluster to file.
+        /// </summary>
+        /// <param name="bc"></param>
         public void writeLogToFile(biometricCluster bc)
         {
             String lineToWrite = "";
@@ -461,6 +504,10 @@ namespace connectionTest
             }
         }
 
+        /// <summary>
+        /// Create file to write logs in. Appears deprecated; check to be sure.
+        /// </summary>
+        /// <param name="rightNow"></param>
         public void createLogFile(DateTime rightNow)
         {
             filePath = basePath + "Biometrics log-" + rightNow.Month + "-" + rightNow.Day + "-"
@@ -481,6 +528,11 @@ namespace connectionTest
             }
         }
 
+        /// <summary>
+        /// Write a log of currently recorded biometrics. Handles internal adc and gsr collection, modifiable for more.
+        /// Deprecated; needs removing
+        /// </summary>
+        /// <param name="rightNow"></param>
         public void writeLogFile(DateTime rightNow)
         {
             filePath = basePath + "Biometrics log-" + rightNow.Month + "-" + rightNow.Day + "-"
